@@ -16,3 +16,8 @@ hs_err_pid*
 .project
 .settings
 .settings/
+libs
+/libs/
+resources
+/resources/
+/outputs/
