@@ -1,5 +1,6 @@
 package insertdoi;
 
+import insertdoi.builddoi.BuildDoi;
 import insertdoi.event.EventData;
 import insertdoi.event.PaperData;
 import insertdoi.pdfs.download.DownloadPdfs;
@@ -21,7 +22,8 @@ public class Main {
         DownloadPdfs downloadPdfs = new DownloadPdfs(eventData);
         downloadPdfs.run();
         
-        // TODO build doi
+        BuildDoi buildDoi = new BuildDoi(eventData);
+        buildDoi.run();
         // TODO build xml
         
         testEventData(eventData);
