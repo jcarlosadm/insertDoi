@@ -1,10 +1,10 @@
 package insertdoi.pdfs.download;
 
-import insertdoi.PropertiesConfig;
-import insertdoi.PropertiesGetter;
+import insertdoi.event.EventData;
+import insertdoi.event.PaperData;
 import insertdoi.pdfs.PdfInfo;
-import insertdoi.readxlsx.EventData;
-import insertdoi.readxlsx.PaperData;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
 import insertdoi.windows.errorwindow.ErrorWindow;
 import insertdoi.windows.progressbar.ProgressBar;
 

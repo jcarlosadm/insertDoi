@@ -1,4 +1,4 @@
-package insertdoi.readxlsx;
+package insertdoi.event;
 
 import insertdoi.pdfs.PdfInfo;
 

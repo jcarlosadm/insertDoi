@@ -1,4 +1,4 @@
-package insertdoi;
+package insertdoi.util;
 
 
 public class PropertiesConfig {

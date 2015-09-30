@@ -1,9 +1,11 @@
 package insertdoi;
 
+import insertdoi.event.EventData;
+import insertdoi.event.PaperData;
 import insertdoi.pdfs.download.DownloadPdfs;
-import insertdoi.readxlsx.EventData;
-import insertdoi.readxlsx.PaperData;
 import insertdoi.readxlsx.XlsxReader;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
 
 import java.util.Properties;
 
