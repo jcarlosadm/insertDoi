@@ -16,7 +16,7 @@ public class Main {
         Properties properties = getPropertiesFile();
         
         XlsxReader xlsxReader = new XlsxReader(PropertiesConfig.getResourcesFolderName()
-                +properties.getProperty("xlsxfile"));
+                +properties.getProperty(PropertiesConfig.getPropertyXlsxFilename()));
         EventData eventData = xlsxReader.getEventData();
         
         testEventData(eventData);
