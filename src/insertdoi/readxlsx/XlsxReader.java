@@ -1,6 +1,6 @@
 package insertdoi.readxlsx;
 
-import insertdoi.util.errorwindow.ErrorWindow;
+import insertdoi.windows.errorwindow.ErrorWindow;
 
 import java.io.File;
 import java.io.FileInputStream;
