@@ -1,6 +1,6 @@
 package insertdoi.readxlsx;
 
-import insertdoi.download.pdfs.PdfInfo;
+import insertdoi.pdfs.PdfInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;

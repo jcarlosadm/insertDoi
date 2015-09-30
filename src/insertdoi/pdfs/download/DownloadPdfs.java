@@ -1,7 +1,8 @@
-package insertdoi.download.pdfs;
+package insertdoi.pdfs.download;
 
 import insertdoi.PropertiesConfig;
 import insertdoi.PropertiesGetter;
+import insertdoi.pdfs.PdfInfo;
 import insertdoi.readxlsx.EventData;
 import insertdoi.readxlsx.PaperData;
 import insertdoi.util.errorwindow.ErrorWindow;
@@ -84,11 +85,16 @@ public class DownloadPdfs {
 
     private int getfile(String urlString, String filename) {
         
+        String foldername = PropertiesGetter.getInstance().getProperty(
+                PropertiesConfig.getPropertyArticlesFolderName());
+        filename = PropertiesConfig.getOutputFolderName()
+                + foldername +"/"+ filename;
+        
+        if ((new File(filename)).exists()) {
+            return getTotalPages(filename);
+        }
+        
         try {
-            String foldername = PropertiesGetter.getInstance().getProperty(
-                    PropertiesConfig.getPropertyArticlesFolderName());
-            filename = PropertiesConfig.getOutputFolderName()
-                    + foldername +"/"+ filename;
             FileUtils.copyURLToFile(new URL(urlString), new File(filename));
         } catch (MalformedURLException e) {
             ErrorWindow.run("Article url error: "+urlString);

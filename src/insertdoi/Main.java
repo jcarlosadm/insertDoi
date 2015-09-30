@@ -1,6 +1,6 @@
 package insertdoi;
 
-import insertdoi.download.pdfs.DownloadPdfs;
+import insertdoi.pdfs.download.DownloadPdfs;
 import insertdoi.readxlsx.EventData;
 import insertdoi.readxlsx.PaperData;
 import insertdoi.readxlsx.XlsxReader;
@@ -19,6 +19,9 @@ public class Main {
         DownloadPdfs downloadPdfs = new DownloadPdfs(eventData);
         downloadPdfs.run();
         
+        // TODO build doi
+        // TODO build xml
+        
         testEventData(eventData);
     }
     
@@ -31,9 +34,9 @@ public class Main {
             for (String url : paper.getUrls()) {
                 System.out.println("    "+url);
             }
-            System.out.println("   "+paper.getPdfInfo().getName());
-            System.out.print("   "+paper.getPdfInfo().getFirstPage());
-            System.out.println(" - "+paper.getPdfInfo().getNumberOfPages());
+            System.out.println("    pdfname: "+paper.getPdfInfo().getName());
+            System.out.print("    firstpage: "+paper.getPdfInfo().getFirstPage());
+            System.out.println(" ; numberofpages: "+paper.getPdfInfo().getNumberOfPages());
         }
     }
 }

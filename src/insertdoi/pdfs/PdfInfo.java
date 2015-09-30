@@ -1,4 +1,4 @@
-package insertdoi.download.pdfs;
+package insertdoi.pdfs;
 
 public class PdfInfo {
 
