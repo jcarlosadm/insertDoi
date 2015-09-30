@@ -13,7 +13,9 @@ public final class ErrorWindow {
         JOptionPane.showMessageDialog(frame, message);
         
         ProgressBar proBar = ProgressBar.getInstance();
-        proBar.closeProgressBar();
+        if (proBar != null) {
+            proBar.closeProgressBar();
+        }
         
         frame.dispose();
         System.exit(0);

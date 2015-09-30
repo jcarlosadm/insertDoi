@@ -3,6 +3,7 @@ package insertdoi;
 import insertdoi.readxlsx.EventData;
 import insertdoi.readxlsx.PaperData;
 import insertdoi.readxlsx.XlsxReader;
+import insertdoi.util.errorwindow.ErrorWindow;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,7 +19,7 @@ public class Main {
                 +properties.getProperty("xlsxfile"));
         EventData eventData = xlsxReader.getEventData();
         
-        //testEventData(eventData);
+        testEventData(eventData);
         
         
     }
@@ -29,12 +30,11 @@ public class Main {
             FileInputStream fStream = new FileInputStream(PropertiesConfig.getResourcesFolderName()
                     +PropertiesConfig.getPropertiesFileName());
             properties.load(fStream);
+            
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            ErrorWindow.run("Properties File not found");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            ErrorWindow.run("Error to read properties file");
         }
         return properties;
     }

@@ -1,5 +1,7 @@
 package insertdoi.readxlsx;
 
+import insertdoi.util.errorwindow.ErrorWindow;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class XlsxReader {
         
         File file = new File(this.fileName);
         XSSFWorkbook xssfWorkbook = null;
+        
         try {
             FileInputStream fStream = new FileInputStream(file);
             xssfWorkbook = new XSSFWorkbook(fStream);
@@ -34,42 +37,60 @@ public class XlsxReader {
             }
             
             PaperData paper = null;
-            while (rowIterator.hasNext()) {
-                Row row = (Row) rowIterator.next();
-                
-                Iterator<Cell> cellIterator = row.cellIterator();
-                
-                while (cellIterator.hasNext()) {
-                    Cell cell = (Cell) cellIterator.next();
-                    
-                    if (cell.getColumnIndex() == 1 && !cell.getStringCellValue().isEmpty()) {
-                        this.addPaperToEventData(paper, eventData);
-                        paper = new PaperData();
-                        paper.setTitle(cell.getStringCellValue());
-                    } else if(cell.getColumnIndex() == 2 && !cell.getStringCellValue().isEmpty()){
-                        paper.addAuthor(cell.getStringCellValue().replace(",", ""));
-                    } else if(cell.getColumnIndex() == 3 && cell.getHyperlink() != null){
-                        paper.addUrl(cell.getHyperlink().getAddress());
-                    }
-                }
-            }
+            paper = readRows(eventData, rowIterator, paper);
             
             this.addPaperToEventData(paper, eventData);
             
             xssfWorkbook.close();
             
         } catch (IOException e) {
-            // TODO: handle exception
+            ErrorWindow.run("Error to read xlsx file");
         }
         
         return eventData;
     }
 
-    private void addPaperToEventData(PaperData paper, EventData eventData) {
-        if (paper == null) {
-            return;
+    private PaperData readRows(EventData eventData, Iterator<Row> rowIterator,
+            PaperData paper) {
+        if (rowIterator.hasNext()) {
+            Row row = (Row) rowIterator.next();
+            
+            Iterator<Cell> cellIterator = row.cellIterator();
+            
+            paper = readCells(eventData, paper, cellIterator);
+            paper = readRows(eventData, rowIterator, paper);
         }
-        
-        eventData.addPaper(paper);
+        return paper;
+    }
+
+    private PaperData readCells(EventData eventData, PaperData paper,
+            Iterator<Cell> cellIterator) {
+        if (cellIterator.hasNext()) {
+            Cell cell = (Cell) cellIterator.next();
+            
+            paper = extractXlsxData(eventData, paper, cell);
+            paper = readCells(eventData, paper, cellIterator);
+        }
+        return paper;
+    }
+
+    private PaperData extractXlsxData(EventData eventData, PaperData paper,
+            Cell cell) {
+        if (cell.getColumnIndex() == 1 && !cell.getStringCellValue().isEmpty()) {
+            this.addPaperToEventData(paper, eventData);
+            paper = new PaperData();
+            paper.setTitle(cell.getStringCellValue());
+        } else if(cell.getColumnIndex() == 2 && !cell.getStringCellValue().isEmpty()){
+            paper.addAuthor(cell.getStringCellValue().replace(",", ""));
+        } else if(cell.getColumnIndex() == 3 && cell.getHyperlink() != null){
+            paper.addUrl(cell.getHyperlink().getAddress());
+        }
+        return paper;
+    }
+
+    private void addPaperToEventData(PaperData paper, EventData eventData) {
+        if (paper != null) {
+            eventData.addPaper(paper);
+        }
     }
 }
