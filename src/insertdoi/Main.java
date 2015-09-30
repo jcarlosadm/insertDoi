@@ -39,6 +39,7 @@ public class Main {
             System.out.println("    pdfname: "+paper.getPdfInfo().getName());
             System.out.print("    firstpage: "+paper.getPdfInfo().getFirstPage());
             System.out.println(" ; numberofpages: "+paper.getPdfInfo().getNumberOfPages());
+            System.out.println("    doi: "+paper.getDoiString());
         }
     }
 }

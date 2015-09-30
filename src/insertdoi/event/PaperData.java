@@ -12,6 +12,7 @@ public class PaperData {
     private List<String> authors = new ArrayList<String>();
     private List<String> urls = new ArrayList<String>();
     private PdfInfo pdfInfo = null;
+    private String doiString = "";
 
     public String getTitle() {
         return this.title;
@@ -43,6 +44,14 @@ public class PaperData {
     
     public PdfInfo getPdfInfo(){
         return this.pdfInfo;
+    }
+    
+    public void setDoiString(String doiString){
+        this.doiString = doiString;
+    }
+    
+    public String getDoiString(){
+        return this.doiString;
     }
 
 }
