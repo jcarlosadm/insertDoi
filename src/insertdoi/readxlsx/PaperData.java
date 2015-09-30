@@ -11,7 +11,7 @@ public class PaperData {
     private String title = "";
     private List<String> authors = new ArrayList<String>();
     private List<String> urls = new ArrayList<String>();
-    private List<PdfInfo> pdfsInfo = new ArrayList<PdfInfo>();
+    private PdfInfo pdfInfo = null;
 
     public String getTitle() {
         return this.title;
@@ -37,12 +37,12 @@ public class PaperData {
         return Collections.unmodifiableList(this.urls);
     }
     
-    public void addPdfInfo(PdfInfo pdfInfo){
-        this.pdfsInfo.add(pdfInfo);
+    public void setPdfInfo(PdfInfo pdfInfo){
+        this.pdfInfo = pdfInfo;
     }
     
-    public List<PdfInfo> getPdfsInfo(){
-        return this.pdfsInfo;
+    public PdfInfo getPdfInfo(){
+        return this.pdfInfo;
     }
 
 }
