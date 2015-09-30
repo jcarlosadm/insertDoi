@@ -2,7 +2,7 @@ package insertdoi.readxlsx;
 
 import insertdoi.event.EventData;
 import insertdoi.event.PaperData;
-import insertdoi.windows.errorwindow.ErrorWindow;
+import insertdoi.util.windows.errorwindow.ErrorWindow;
 
 import java.io.File;
 import java.io.FileInputStream;

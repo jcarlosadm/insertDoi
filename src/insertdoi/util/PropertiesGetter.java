@@ -1,6 +1,6 @@
 package insertdoi.util;
 
-import insertdoi.windows.errorwindow.ErrorWindow;
+import insertdoi.util.windows.errorwindow.ErrorWindow;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

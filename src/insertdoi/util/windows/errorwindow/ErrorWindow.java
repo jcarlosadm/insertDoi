@@ -1,6 +1,6 @@
-package insertdoi.windows.errorwindow;
+package insertdoi.util.windows.errorwindow;
 
-import insertdoi.windows.progressbar.ProgressBar;
+import insertdoi.util.windows.progressbar.ProgressBar;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;

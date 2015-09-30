@@ -5,8 +5,8 @@ import insertdoi.event.PaperData;
 import insertdoi.pdfs.PdfInfo;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
-import insertdoi.windows.errorwindow.ErrorWindow;
-import insertdoi.windows.progressbar.ProgressBar;
+import insertdoi.util.windows.errorwindow.ErrorWindow;
+import insertdoi.util.windows.progressbar.ProgressBar;
 
 import java.io.File;
 import java.io.IOException;

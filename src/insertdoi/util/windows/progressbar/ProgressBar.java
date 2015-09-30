@@ -1,4 +1,4 @@
-package insertdoi.windows.progressbar;
+package insertdoi.util.windows.progressbar;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
