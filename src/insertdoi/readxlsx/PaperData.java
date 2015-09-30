@@ -1,5 +1,7 @@
 package insertdoi.readxlsx;
 
+import insertdoi.download.pdfs.PdfInfo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +11,7 @@ public class PaperData {
     private String title = "";
     private List<String> authors = new ArrayList<String>();
     private List<String> urls = new ArrayList<String>();
+    private List<PdfInfo> pdfsInfo = new ArrayList<PdfInfo>();
 
     public String getTitle() {
         return this.title;
@@ -32,6 +35,14 @@ public class PaperData {
     
     public List<String> getUrls(){
         return Collections.unmodifiableList(this.urls);
+    }
+    
+    public void addPdfInfo(PdfInfo pdfInfo){
+        this.pdfsInfo.add(pdfInfo);
+    }
+    
+    public List<PdfInfo> getPdfsInfo(){
+        return this.pdfsInfo;
     }
 
 }
