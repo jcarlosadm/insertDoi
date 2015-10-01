@@ -7,6 +7,7 @@ import insertdoi.pdfs.download.DownloadPdfs;
 import insertdoi.readxlsx.XlsxReader;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
+import insertdoi.xml.BuildXmlInfo;
 
 import java.util.Properties;
 
@@ -25,6 +26,8 @@ public class Main {
         BuildDoi buildDoi = new BuildDoi(eventData);
         buildDoi.run();
         // TODO build xml
+        BuildXmlInfo buildXmlInfo = new BuildXmlInfo(eventData);
+        buildXmlInfo.run();
         
         testEventData(eventData);
     }
