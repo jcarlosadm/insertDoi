@@ -2,9 +2,9 @@ package insertdoi;
 
 import insertdoi.builddoi.BuildDoi;
 import insertdoi.event.EventData;
-import insertdoi.event.PaperData;
 import insertdoi.pdfs.download.DownloadPdfs;
 import insertdoi.readxlsx.XlsxReader;
+import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
 import insertdoi.xml.BuildXmlInfo;
@@ -25,26 +25,12 @@ public class Main {
         
         BuildDoi buildDoi = new BuildDoi(eventData);
         buildDoi.run();
-        // TODO build xml
+        
         BuildXmlInfo buildXmlInfo = new BuildXmlInfo(eventData);
         buildXmlInfo.run();
         
-        testEventData(eventData);
-    }
-    
-    private static void testEventData(EventData eventData) {
-        for (PaperData paper : eventData.getPapers()) {
-            System.out.println(paper.getTitle());
-            for (String author : paper.getAuthors()) {
-                System.out.println("    "+author);
-            }
-            for (String url : paper.getUrls()) {
-                System.out.println("    "+url);
-            }
-            System.out.println("    pdfname: "+paper.getPdfInfo().getName());
-            System.out.print("    firstpage: "+paper.getPdfInfo().getFirstPage());
-            System.out.println(" ; numberofpages: "+paper.getPdfInfo().getNumberOfPages());
-            System.out.println("    doi: "+paper.getDoiString());
-        }
+        TexfileBuilder texfileBuilder = new TexfileBuilder(eventData);
+        texfileBuilder.run();
+        
     }
 }

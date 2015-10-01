@@ -7,6 +7,7 @@ public class PropertiesConfig {
     private static final String OUTPUT_FOLDER_NAME = "outputs/";
     private static final String PROPERTIES_FILE_NAME = "conf.properties";
     private static final String XML_FILE_NAME = "info.xml";
+    private static final String TEX_FILE_NAME = "articles.tex";
     
     private static final String PROPERTY_XLSX_FILENAME = "xlsxfile";
     private static final String PROPERTY_ARTICLES_FOLDER_NAME = "articles_folder";
@@ -160,5 +161,9 @@ public class PropertiesConfig {
 
     public static String getPropertyXmlBodyJournalArticleType() {
         return PROPERTY_XML_BODY_JOURNAL_ARTICLE_TYPE;
+    }
+
+    public static String getTexFileName() {
+        return TEX_FILE_NAME;
     }
 }
