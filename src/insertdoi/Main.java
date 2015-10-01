@@ -7,6 +7,7 @@ import insertdoi.readxlsx.XlsxReader;
 import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
+import insertdoi.util.windows.finishWindow.FinishWindow;
 import insertdoi.xml.BuildXmlInfo;
 
 import java.util.Properties;
@@ -32,5 +33,6 @@ public class Main {
         TexfileBuilder texfileBuilder = new TexfileBuilder(eventData);
         texfileBuilder.run();
         
+        FinishWindow.run();
     }
 }
