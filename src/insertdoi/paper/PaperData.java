@@ -1,5 +1,6 @@
-package insertdoi.event;
+package insertdoi.paper;
 
+import insertdoi.paper.author.Author;
 import insertdoi.pdfs.PdfInfo;
 
 import java.util.ArrayList;
@@ -9,7 +10,10 @@ import java.util.List;
 public class PaperData {
 
     private String title = "";
-    private List<String> authors = new ArrayList<String>();
+    private String track = "";
+    private String status = "";
+    private String resume = "";
+    private List<Author> authors = new ArrayList<Author>();
     private List<String> urls = new ArrayList<String>();
     private PdfInfo pdfInfo = null;
     private String doiString = "";
@@ -22,11 +26,35 @@ public class PaperData {
         this.title = title;
     }
 
-    public void addAuthor(String author){
+    public String getTrack() {
+        return this.track;
+    }
+
+    public void setTrack(String track) {
+        this.track = track;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getResume() {
+        return this.resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    public void addAuthor(Author author){
         this.authors.add(author);
     }
     
-    public List<String> getAuthors(){
+    public List<Author> getAuthors(){
         return Collections.unmodifiableList(this.authors);
     }
     

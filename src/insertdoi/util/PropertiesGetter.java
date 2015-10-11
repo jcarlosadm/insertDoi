@@ -2,6 +2,7 @@ package insertdoi.util;
 
 import insertdoi.util.windows.errorwindow.ErrorWindow;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,8 +18,10 @@ public class PropertiesGetter {
         if (instance == null) {
             Properties properties = new Properties();
             try {
-                properties.load(new FileInputStream(PropertiesConfig.getResourcesFolderName()
-                        +PropertiesConfig.getPropertiesFileName()));
+                String path = PropertiesConfig.getResourcesFolderName()+File.separator;
+                path += PropertiesConfig.getPropertiesFileName();
+                
+                properties.load(new FileInputStream(path));
             } catch (FileNotFoundException e) {
                 ErrorWindow.run("Properties File not found");
             } catch (IOException e) {

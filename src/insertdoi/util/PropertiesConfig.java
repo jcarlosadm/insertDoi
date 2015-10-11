@@ -3,8 +3,8 @@ package insertdoi.util;
 
 public class PropertiesConfig {
     
-    private static final String RESOURCES_FOLDER_NAME = "resources/";
-    private static final String OUTPUT_FOLDER_NAME = "outputs/";
+    private static final String RESOURCES_FOLDER_NAME = "resources";
+    private static final String OUTPUT_FOLDER_NAME = "outputs";
     private static final String PROPERTIES_FILE_NAME = "conf.properties";
     private static final String XML_FILE_NAME = "info.xml";
     private static final String TEX_FILE_NAME = "articles.tex";

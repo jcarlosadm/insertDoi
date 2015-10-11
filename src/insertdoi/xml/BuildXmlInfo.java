@@ -1,7 +1,8 @@
 package insertdoi.xml;
 
 import insertdoi.event.EventData;
-import insertdoi.event.PaperData;
+import insertdoi.paper.PaperData;
+import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
@@ -217,8 +218,8 @@ public class BuildXmlInfo {
         Element contributors = doc.createElement(CONTRIBUTORS_ELEMENT_NAME);
         
         int sequence = 1;
-        for (String author : paper.getAuthors()) {
-            contributors.appendChild(this.addPersonElement(author, sequence, doc));
+        for (Author author : paper.getAuthors()) {
+            contributors.appendChild(this.addPersonElement(author.getName(), sequence, doc));
             sequence++;
         }
         

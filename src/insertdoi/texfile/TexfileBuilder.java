@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import insertdoi.event.EventData;
-import insertdoi.event.PaperData;
+import insertdoi.paper.PaperData;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
 import insertdoi.xml.ReadXml;

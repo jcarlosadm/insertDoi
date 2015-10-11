@@ -1,7 +1,7 @@
 package insertdoi.pdfs.download;
 
 import insertdoi.event.EventData;
-import insertdoi.event.PaperData;
+import insertdoi.paper.PaperData;
 import insertdoi.pdfs.PdfInfo;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
