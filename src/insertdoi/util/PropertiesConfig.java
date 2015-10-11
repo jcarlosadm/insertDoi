@@ -9,8 +9,10 @@ public class PropertiesConfig {
     private static final String XML_FILE_NAME = "info.xml";
     private static final String TEX_FILE_NAME = "articles.tex";
     
-    private static final String PROPERTY_XLSX_FILENAME = "xlsxfile";
+    private static final String EXTENSION_XLSX_FILE = "xlsx";
     private static final String PROPERTY_ARTICLES_FOLDER_NAME = "articles_folder";
+    private static final String PROPERTY_USER_SUFFIX = "user";
+    private static final String PROPERTY_PASSWORD_SUFFIX = "password";
     private static final String PROPERTY_JEMS_USER = "jems_user";
     private static final String PROPERTY_JEMS_PASSWORD = "jems_password";
     private static final String PROPERTY_DEFAULT_DOI_STRING = "default_doi_string";
@@ -55,16 +57,24 @@ public class PropertiesConfig {
         return PROPERTIES_FILE_NAME;
     }
     
-    public static String getPropertyXlsxFilename(){
-        return PROPERTY_XLSX_FILENAME;
-    }
-    
     public static String getOutputFolderName(){
         return OUTPUT_FOLDER_NAME;
     }
     
+    public static String getExtensionXlsxFile() {
+        return EXTENSION_XLSX_FILE;
+    }
+
     public static String getPropertyArticlesFolderName(){
         return PROPERTY_ARTICLES_FOLDER_NAME;
+    }
+    
+    public static String getUserPropertyName(String filename){
+        return (filename+"."+PROPERTY_USER_SUFFIX);
+    }
+    
+    public static String getPasswordPropertyName(String filename){
+        return (filename+"."+PROPERTY_PASSWORD_SUFFIX);
     }
     
     public static String getPropertyJemsUser(){

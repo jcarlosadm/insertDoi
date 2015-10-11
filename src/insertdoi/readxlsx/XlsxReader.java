@@ -39,7 +39,8 @@ public class XlsxReader {
     
     public EventData getEventData(){
         EventData eventData = new EventData();
-        eventData.setXlsxFileName(this.fileName);
+        eventData.setXlsxFileName(this.fileName.substring(this.fileName
+                .lastIndexOf(File.separator)+1));
         
         File file = new File(this.fileName);
         XSSFWorkbook xssfWorkbook = null;

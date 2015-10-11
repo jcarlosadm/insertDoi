@@ -58,7 +58,7 @@ public class DownloadPdfs {
             folder.mkdir();
         }
         
-        folder = new File(PropertiesConfig.getOutputFolderName()
+        folder = new File(PropertiesConfig.getOutputFolderName() + File.separator
                 + PropertiesGetter.getInstance().getProperty(
                         PropertiesConfig.getPropertyArticlesFolderName()));
         if (!folder.exists()) {
@@ -87,8 +87,8 @@ public class DownloadPdfs {
         
         String foldername = PropertiesGetter.getInstance().getProperty(
                 PropertiesConfig.getPropertyArticlesFolderName());
-        filename = PropertiesConfig.getOutputFolderName()
-                + foldername +"/"+ filename;
+        filename = PropertiesConfig.getOutputFolderName()+File.separator
+                + foldername +File.separator+ filename;
         
         if ((new File(filename)).exists()) {
             return getTotalPages(filename);
@@ -134,8 +134,12 @@ public class DownloadPdfs {
 
     private String insertUserAndPassword(String urlString) {
         Properties prop = PropertiesGetter.getInstance();
-        String user = prop.getProperty(PropertiesConfig.getPropertyJemsUser());
-        String password = prop.getProperty(PropertiesConfig.getPropertyJemsPassword());
+        
+        String filename = this.eventData.getXlsxFileName().replace(" ", "_");
+        filename = filename.substring(0, filename.lastIndexOf('.'));
+        
+        String user = prop.getProperty(PropertiesConfig.getUserPropertyName(filename));
+        String password = prop.getProperty(PropertiesConfig.getPasswordPropertyName(filename));
         
         int index = urlString.indexOf("PS.cgi?") + "PS.cgi?".length();
         
