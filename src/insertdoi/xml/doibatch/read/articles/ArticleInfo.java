@@ -1,4 +1,4 @@
-package insertdoi.xml.articles;
+package insertdoi.xml.doibatch.read.articles;
 
 import java.util.ArrayList;
 import java.util.Calendar;

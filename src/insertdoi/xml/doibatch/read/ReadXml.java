@@ -1,9 +1,9 @@
-package insertdoi.xml;
+package insertdoi.xml.doibatch.read;
 
 import insertdoi.util.windows.errorwindow.ErrorWindow;
-import insertdoi.xml.articles.ArticleInfo;
-import insertdoi.xml.articles.Contributor;
-import insertdoi.xml.articles.IssnJournal;
+import insertdoi.xml.doibatch.read.articles.ArticleInfo;
+import insertdoi.xml.doibatch.read.articles.Contributor;
+import insertdoi.xml.doibatch.read.articles.IssnJournal;
 
 import java.io.File;
 import java.util.ArrayList;

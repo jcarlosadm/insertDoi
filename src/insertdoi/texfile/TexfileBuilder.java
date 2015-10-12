@@ -3,9 +3,9 @@ package insertdoi.texfile;
 import insertdoi.pdfs.PdfMap;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
-import insertdoi.xml.ReadXml;
-import insertdoi.xml.articles.ArticleInfo;
-import insertdoi.xml.articles.Contributor;
+import insertdoi.xml.doibatch.read.ReadXml;
+import insertdoi.xml.doibatch.read.articles.ArticleInfo;
+import insertdoi.xml.doibatch.read.articles.Contributor;
 
 import java.io.BufferedWriter;
 import java.io.File;

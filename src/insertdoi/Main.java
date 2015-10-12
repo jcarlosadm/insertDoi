@@ -10,7 +10,7 @@ import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
-import insertdoi.xml.BuildXmlDoiBatch;
+import insertdoi.xml.doibatch.build.BuildXmlDoiBatch;
 
 import java.io.File;
 import java.util.List;

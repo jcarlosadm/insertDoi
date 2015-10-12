@@ -1,4 +1,4 @@
-package insertdoi.xml;
+package insertdoi.xml.doibatch.build;
 
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;

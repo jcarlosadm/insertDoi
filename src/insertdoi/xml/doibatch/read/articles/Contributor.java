@@ -1,4 +1,4 @@
-package insertdoi.xml.articles;
+package insertdoi.xml.doibatch.read.articles;
 
 public class Contributor {
     private String role;
