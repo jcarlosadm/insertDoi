@@ -18,7 +18,10 @@ public class PropertiesGetter {
         if (instance == null) {
             Properties properties = new Properties();
             try {
-                String path = PropertiesConfig.getResourcesFolderName()+File.separator;
+                String path = "";
+                if (PropertiesConfig.getResourcesFolderName() != "") {
+                    path = PropertiesConfig.getResourcesFolderName()+File.separator;
+                }
                 path += PropertiesConfig.getPropertiesFileName();
                 
                 properties.load(new FileInputStream(path));

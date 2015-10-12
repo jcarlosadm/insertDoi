@@ -19,7 +19,11 @@ import java.util.List;
 public class Main {
     
     public static void main(String[] args) {
-        String resourcesFolderName = PropertiesConfig.getResourcesFolderName();
+        String resourcesFolderName = "./";
+        if (PropertiesConfig.getResourcesFolderName() != "") {
+            resourcesFolderName = PropertiesConfig.getResourcesFolderName() + File.separator;
+        }
+        
         String extension = PropertiesConfig.getExtensionXlsxFile();
         
         List<String> xlsxFilesName = GetFileNames.run(resourcesFolderName, extension);
@@ -30,7 +34,7 @@ public class Main {
         PdfMap pdfMap = new PdfMap();
         
         for (String fileName : xlsxFilesName) {
-            XlsxReader xlsxReader = new XlsxReader(resourcesFolderName+File.separator+fileName);
+            XlsxReader xlsxReader = new XlsxReader(resourcesFolderName+fileName);
             EventData eventData = xlsxReader.getEventData();
             
             DownloadPdfs downloadPdfs = new DownloadPdfs(eventData);
