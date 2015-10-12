@@ -11,6 +11,7 @@ import insertdoi.util.PropertiesConfig;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
 import insertdoi.xml.doibatch.build.BuildXmlDoiBatch;
+import insertdoi.xml.issues.build.BuildXmlIssues;
 
 import java.io.File;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Main {
         List<String> xlsxFilesName = GetFileNames.run(resourcesFolderName, extension);
         
         BuildXmlDoiBatch buildXmlDoiBatch = new BuildXmlDoiBatch();
+        BuildXmlIssues buildXmlIssues = new BuildXmlIssues();
         
         PdfMap pdfMap = new PdfMap();
         
@@ -39,10 +41,12 @@ public class Main {
             
             for (PaperData paper : eventData.getPapers()) {
                 buildXmlDoiBatch.addPaper(paper);
+                buildXmlIssues.addPaper(paper);
             }
         }
         
         buildXmlDoiBatch.run();
+        buildXmlIssues.run();
         
         TexfileBuilder texfileBuilder = new TexfileBuilder();
         texfileBuilder.run(pdfMap);

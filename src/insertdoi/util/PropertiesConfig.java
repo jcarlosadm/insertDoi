@@ -47,6 +47,14 @@ public class PropertiesConfig {
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_ARTICLE_TYPE =
             "xml.doibatch.body.journal_article.type";
     
+    private static final String PROPERTY_XML_ISSUE_VOLUME = "xml.issue.volume";
+    private static final String PROPERTY_XML_ISSUE_NUMBER = "xml.issue.number";
+    private static final String PROPERTY_XML_ISSUE_YEAR = "xml.issue.year";
+    private static final String PROPERTY_XML_ISSUE_MONTH = "xml.issue.month";
+    private static final String PROPERTY_XML_ISSUE_DAY = "xml.issue.day";
+    private static final String PROPERTY_XML_ISSUE_POLICY_PT_BR = "xml.issue.policy.pt_br";
+    private static final String PROPERTY_XML_ISSUE_POLICY_EN_US = "xml.issue.policy.en_us";
+    
     public static String getResourcesFolderName(){
         return RESOURCES_FOLDER_NAME;
     }
@@ -165,5 +173,33 @@ public class PropertiesConfig {
 
     public static String getTexFileName() {
         return TEX_FILE_NAME;
+    }
+
+    public static String getPropertyXmlIssueVolume() {
+        return PROPERTY_XML_ISSUE_VOLUME;
+    }
+
+    public static String getPropertyXmlIssueNumber() {
+        return PROPERTY_XML_ISSUE_NUMBER;
+    }
+
+    public static String getPropertyXmlIssueYear() {
+        return PROPERTY_XML_ISSUE_YEAR;
+    }
+
+    public static String getPropertyXmlIssueMonth() {
+        return PROPERTY_XML_ISSUE_MONTH;
+    }
+
+    public static String getPropertyXmlIssueDay() {
+        return PROPERTY_XML_ISSUE_DAY;
+    }
+
+    public static String getPropertyXmlIssuePolicyPtBr() {
+        return PROPERTY_XML_ISSUE_POLICY_PT_BR;
+    }
+
+    public static String getPropertyXmlIssuePolicyEnUs() {
+        return PROPERTY_XML_ISSUE_POLICY_EN_US;
     }
 }
