@@ -1,6 +1,5 @@
 package insertdoi.xml;
 
-import insertdoi.event.EventData;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
@@ -8,6 +7,8 @@ import insertdoi.util.PropertiesGetter;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -25,7 +26,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class BuildXmlInfo {
+public class BuildXmlDoiBatch {
 
     private static final String RESOURCE_ELEMENT_NAME = "resource";
     private static final String DOI_ELEMENT_NAME = "doi";
@@ -61,11 +62,7 @@ public class BuildXmlInfo {
     private static final String HEAD_ELEMENT_NAME = "head";
     private static final String ROOT_ELEMENT_NAME = "doi_batch";
     
-    private EventData eventData = null;
-    
-    public BuildXmlInfo(EventData eventData) {
-        this.eventData = eventData;
-    }
+    private List<PaperData> papers = new ArrayList<PaperData>();
     
     public void run() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -99,7 +96,7 @@ public class BuildXmlInfo {
             Transformer transformer = transFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(PropertiesConfig.getOutputFolderName()
-                    +PropertiesConfig.getXmlFileName()));
+                    +File.separator+PropertiesConfig.getXmlFileName()));
             transformer.transform(source, result);
         } catch (TransformerConfigurationException e) {
             ErrorWindow.run("Error to configure xml to save");
@@ -109,10 +106,14 @@ public class BuildXmlInfo {
     }
 
     private void setBodyElements(Element body, Document doc) {
-        for (PaperData paper : this.eventData.getPapers()) {
+        for (PaperData paper : this.papers) {
             Element journal= this.createJournalElement(paper, doc);
             body.appendChild(journal);
         }
+    }
+    
+    public void addPaper(PaperData paper){
+        this.papers.add(paper);
     }
 
     private Element createJournalElement(PaperData paper, Document doc) {
@@ -130,22 +131,22 @@ public class BuildXmlInfo {
         Element metadata = doc.createElement(JOURNAL_METADATA_ELEMENT_NAME);
         
         this.appendNewElement(metadata, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalMetadataFullTitle(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalMetadataFullTitle(), true);
         this.appendNewElement(metadata, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalMetadataAbbrevTitle(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalMetadataAbbrevTitle(), true);
         
         Element issnElectronic = doc.createElement(ISSN_ELEMENT_NAME);
         issnElectronic.setAttribute(MEDIA_TYPE_ATTRINUTE_NAME_FOR_ISSN_ELEMENT,
                 ELECTRONIC_VALUE_FOR_MEDIA_TYPE_ATTRIBUTE);
         issnElectronic.appendChild(doc.createTextNode(prop.getProperty(PropertiesConfig
-                .getPropertyXmlBodyJournalMetadataIssnElectronic())));
+                .getPropertyXmlDoiBatchBodyJournalMetadataIssnElectronic())));
         metadata.appendChild(issnElectronic);
         
         Element issnPrint = doc.createElement(ISSN_ELEMENT_NAME);
         issnPrint.setAttribute(MEDIA_TYPE_ATTRINUTE_NAME_FOR_ISSN_ELEMENT, 
                 PRINT_VALUE_FOR_MEDIA_TYPE_ATTRIBUTE);
         issnPrint.appendChild(doc.createTextNode(prop.getProperty(PropertiesConfig
-                .getPropertyXmlBodyJournalMetadataIssnPrint())));
+                .getPropertyXmlDoiBatchBodyJournalMetadataIssnPrint())));
         metadata.appendChild(issnPrint);
         
         return metadata;
@@ -158,7 +159,7 @@ public class BuildXmlInfo {
         issue_group.appendChild(this.createPublicationDate(doc));
         issue_group.appendChild(this.createJournalVolume(doc));
         this.appendNewElement(issue_group, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalIssueIssue(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalIssueIssue(), true);
         
         return issue_group;
     }
@@ -169,13 +170,13 @@ public class BuildXmlInfo {
         
         publication_date.setAttribute(MEDIA_TYPE_ATTRINUTE_NAME_FOR_ISSN_ELEMENT, prop
                 .getProperty(PropertiesConfig
-                        .getPropertyXmlBodyJournalIssuePublicationDateMediaType()));
+                        .getPropertyXmlDoiBatchBodyJournalIssuePublicationDateMediaType()));
         this.appendNewElement(publication_date, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalIssuePublicationDateMonth(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalIssuePublicationDateMonth(), true);
         this.appendNewElement(publication_date, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalIssuePublicationDateDay(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalIssuePublicationDateDay(), true);
         this.appendNewElement(publication_date, doc, prop, 
-                PropertiesConfig.getPropertyXmlBodyJournalIssuePublicationDateYear(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalIssuePublicationDateYear(), true);
         
         return publication_date;
     }
@@ -186,7 +187,7 @@ public class BuildXmlInfo {
         
         Element volume = doc.createElement(VOLUME_ELEMENT_NAME);
         volume.appendChild(doc.createTextNode(prop.getProperty(
-                PropertiesConfig.getPropertyXmlBodyJournalIssueJournalVolume())));
+                PropertiesConfig.getPropertyXmlDoiBatchBodyJournalIssueJournalVolume())));
         journal_volume.appendChild(volume);
         
         return journal_volume;
@@ -272,7 +273,7 @@ public class BuildXmlInfo {
         Element doi = doc.createElement(DOI_ELEMENT_NAME);
         doi.appendChild(doc.createTextNode(paper.getDoiString()));
         Element resource = doc.createElement(RESOURCE_ELEMENT_NAME);
-        resource.appendChild(doc.createTextNode(paper.getUrls().get(1)));
+        resource.appendChild(doc.createTextNode(""));
         
         doi_data.appendChild(doi);
         doi_data.appendChild(resource);
@@ -285,19 +286,19 @@ public class BuildXmlInfo {
         Element element = null;
         
         element = this.appendNewElement(head, doc, prop, 
-                PropertiesConfig.getPropertyXmlHeadDoibatchId(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchHeadDoibatchId(), true);
         
         element = this.appendNewElement(head, doc, prop, 
-                PropertiesConfig.getPropertyXmlHeadTimestamp(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchHeadTimestamp(), true);
         
         element = doc.createElement(HEAD_DEPOSITOR_ELEMENT_NAME);
         head.appendChild(element);
         
         Element depositor = element;
         element = this.appendNewElement(depositor, doc, prop, 
-                PropertiesConfig.getPropertyXmlHeadDepositorName(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchHeadDepositorName(), true);
         element = this.appendNewElement(depositor, doc, prop, 
-                PropertiesConfig.getPropertyXmlHeadEmailAddress(), true);
+                PropertiesConfig.getPropertyXmlDoiBatchHeadEmailAddress(), true);
         
         element = doc.createElement(HEAD_REGISTRANT_ELEMENT_NAME);
         head.appendChild(element);
@@ -325,7 +326,7 @@ public class BuildXmlInfo {
         this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
         
         attributeName = XSI_SCHEMALOCATION_ATTRIBUTE_NAME;
-        attributeValue = prop.getProperty(PropertiesConfig.getPropertyXmlXsiSchemalocation());
+        attributeValue = prop.getProperty(PropertiesConfig.getPropertyXmlDoiBatchXsiSchemalocation());
         this.addAttributeNsToElement(rootElement, doc, attributeName, attributeValue);
     }
 

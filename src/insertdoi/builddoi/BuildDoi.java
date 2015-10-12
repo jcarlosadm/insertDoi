@@ -28,8 +28,11 @@ public class BuildDoi {
         Properties prop = PropertiesGetter.getInstance();
         String doiString = prop.getProperty(PropertiesConfig.getPropertyDefaultDoiString());
         
-        doiString += prop.getProperty(PropertiesConfig.getPropertyEventName())+".";
-        doiString += prop.getProperty(PropertiesConfig.getPropertySubeventName())+".";
+        String filename = this.eventData.getXlsxFileName().replace(" ", "_");
+        filename = filename.substring(0, filename.lastIndexOf('.'));
+        
+        doiString += prop.getProperty(PropertiesConfig.getPropertyEventName(filename))+".";
+        doiString += prop.getProperty(PropertiesConfig.getPropertySubeventName(filename))+".";
         doiString += prop.getProperty(PropertiesConfig.getPropertyYear())+".";
         doiString += paper.getPdfInfo().getFirstPage();
         

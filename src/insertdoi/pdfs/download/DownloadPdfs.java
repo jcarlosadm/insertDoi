@@ -3,6 +3,7 @@ package insertdoi.pdfs.download;
 import insertdoi.event.EventData;
 import insertdoi.paper.PaperData;
 import insertdoi.pdfs.PdfInfo;
+import insertdoi.pdfs.PdfMap;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
@@ -31,7 +32,7 @@ public class DownloadPdfs {
         this.eventData = eventData;
     }
     
-    public void run() {
+    public void run(PdfMap pdfMap) {
         System.setProperty("jsse.enableSNIExtension", "false");
         
         List<PaperData> papers = this.eventData.getPapers();
@@ -46,7 +47,7 @@ public class DownloadPdfs {
         
         for (PaperData paper : papers) {
             firstpageNextPaper = 
-                    this.downloadPdf(paper, progressBar, firstpageNextPaper);
+                    this.downloadPdf(paper, progressBar, firstpageNextPaper, pdfMap);
         }
         
         progressBar.closeProgressBar();
@@ -66,7 +67,8 @@ public class DownloadPdfs {
         }
     }
 
-    private int downloadPdf(PaperData paper, ProgressBar progressBar, int firstPage) {
+    private int downloadPdf(PaperData paper, ProgressBar progressBar, int firstPage,
+            PdfMap pdfMap) {
         String urlString = paper.getUrls().get(URL_INDEX_TO_GET_FOR_EACH_PAPER);
         urlString = this.insertUserAndPassword(urlString);
         String filename = this.getFilenameFromUrl(urlString);
@@ -78,6 +80,8 @@ public class DownloadPdfs {
         pdfInfo.setFirstPage(firstPage);
         pdfInfo.setNumberOfPages(totalPages);
         paper.setPdfInfo(pdfInfo);
+        
+        pdfMap.addPdf(paper.getTitle(), pdfInfo);
         
         progressBar.finishOneOperation();
         return firstPage + totalPages;

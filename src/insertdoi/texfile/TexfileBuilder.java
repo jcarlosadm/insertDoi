@@ -1,5 +1,12 @@
 package insertdoi.texfile;
 
+import insertdoi.pdfs.PdfMap;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.windows.errorwindow.ErrorWindow;
+import insertdoi.xml.ReadXml;
+import insertdoi.xml.articles.ArticleInfo;
+import insertdoi.xml.articles.Contributor;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -9,24 +16,10 @@ import java.util.List;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
-import insertdoi.event.EventData;
-import insertdoi.paper.PaperData;
-import insertdoi.util.PropertiesConfig;
-import insertdoi.util.windows.errorwindow.ErrorWindow;
-import insertdoi.xml.ReadXml;
-import insertdoi.xml.articles.ArticleInfo;
-import insertdoi.xml.articles.Contributor;
-
 public class TexfileBuilder {
     
-    private EventData eventData = null;
-    
-    public TexfileBuilder(EventData eventData) {
-        this.eventData = eventData;
-    }
-    
-    public void run() {
-        File file = new File(PropertiesConfig.getOutputFolderName()
+    public void run(PdfMap pdfMap) {
+        File file = new File(PropertiesConfig.getOutputFolderName()+File.separator
                 +PropertiesConfig.getTexFileName());
         
         BufferedWriter output = null;
@@ -36,39 +29,32 @@ public class TexfileBuilder {
             ErrorWindow.run("Fail to create file articles.tex");
         }
         
-        this.insertArticles(output);
+        this.insertArticles(output, pdfMap);
         
         try {
             output.close();
         } catch (IOException e) {}
     }
 
-    private void insertArticles(BufferedWriter output) {
-        ReadXml readXml = new ReadXml(PropertiesConfig.getOutputFolderName() 
+    private void insertArticles(BufferedWriter output, PdfMap pdfMap) {
+        ReadXml readXml = new ReadXml(PropertiesConfig.getOutputFolderName()+File.separator
                 +PropertiesConfig.getXmlFileName());
         readXml.readAllArticles();
         List<ArticleInfo> articleInfoList = readXml.getArticleInfoList();
         writeHeader(output);
         
         for (ArticleInfo articleInfo : articleInfoList) {
-            String fileName = getPdfFilename(articleInfo);
+            String fileName = getPdfFilename(articleInfo, pdfMap);
             writeArticle(articleInfo, fileName, output);
         }
     }
     
-    private String getPdfFilename(ArticleInfo articleInfo) {
-        String title1 = articleInfo.getArticleTitlesList().get(0);
-        String title2 = "";
-        for (PaperData paper : this.eventData.getPapers()) {
-            title2 = paper.getTitle();
-            if (title1.equals(title2)) {
-                String filename = paper.getPdfInfo().getName();
-                filename = filename.substring(0, filename.lastIndexOf('.'));
-                return filename;
-            }
-        }
+    private String getPdfFilename(ArticleInfo articleInfo, PdfMap pdfMap) {
+        String title = articleInfo.getArticleTitlesList().get(0);
+        String pdfName = pdfMap.getPdfInfo(title).getName();
+        pdfName = pdfName.substring(0, pdfName.lastIndexOf("."));
         
-        return "";
+        return pdfName;
     }
 
     private void writeHeader(BufferedWriter output) {
