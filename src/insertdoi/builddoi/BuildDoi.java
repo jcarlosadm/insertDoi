@@ -28,8 +28,7 @@ public class BuildDoi {
         Properties prop = PropertiesGetter.getInstance();
         String doiString = prop.getProperty(PropertiesConfig.getPropertyDefaultDoiString());
         
-        String filename = this.eventData.getXlsxFileName().replace(" ", "_");
-        filename = filename.substring(0, filename.lastIndexOf('.'));
+        String filename = this.eventData.getXlsxFileName();
         
         doiString += prop.getProperty(PropertiesConfig.getPropertyEventName(filename))+".";
         doiString += prop.getProperty(PropertiesConfig.getPropertySubeventName(filename))+".";

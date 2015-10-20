@@ -23,7 +23,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 public class DownloadPdfs {
     
-    private static final int URL_INDEX_TO_GET_FOR_EACH_PAPER = 1;
     private static final boolean EVEN_PAGES_ONLY = true;
     
     private EventData eventData = null;
@@ -32,7 +31,7 @@ public class DownloadPdfs {
         this.eventData = eventData;
     }
     
-    public void run(PdfMap pdfMap) {
+    public int run(PdfMap pdfMap, int firstpageNextPaper) {
         System.setProperty("jsse.enableSNIExtension", "false");
         
         List<PaperData> papers = this.eventData.getPapers();
@@ -43,14 +42,14 @@ public class DownloadPdfs {
         
         this.createDownloadFolder();
         
-        int firstpageNextPaper = 1;
-        
         for (PaperData paper : papers) {
             firstpageNextPaper = 
                     this.downloadPdf(paper, progressBar, firstpageNextPaper, pdfMap);
         }
         
         progressBar.closeProgressBar();
+        
+        return firstpageNextPaper;
     }
     
     private void createDownloadFolder() {
@@ -69,14 +68,28 @@ public class DownloadPdfs {
 
     private int downloadPdf(PaperData paper, ProgressBar progressBar, int firstPage,
             PdfMap pdfMap) {
-        String urlString = paper.getUrls().get(URL_INDEX_TO_GET_FOR_EACH_PAPER);
-        urlString = this.insertUserAndPassword(urlString);
-        String filename = this.getFilenameFromUrl(urlString);
         
-        int totalPages = this.getfile(urlString, filename);
+        String xlsxfilename = this.eventData.getXlsxFileName();
+        
+        Properties prop = PropertiesGetter.getInstance();
+        String suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(xlsxfilename));
+        suffix += ".pdf";
+        
+        String urlString = "";
+        
+        for (String url : paper.getUrls()) {
+            if (url.endsWith(suffix)) {
+                urlString = url;
+            }
+        }
+        
+        urlString = this.insertUserAndPassword(urlString);
+        String pdfname = this.getFilenameFromUrl(urlString);
+        
+        int totalPages = this.getfile(urlString, pdfname);
         
         PdfInfo pdfInfo = new PdfInfo();
-        pdfInfo.setName(filename);
+        pdfInfo.setName(pdfname);
         pdfInfo.setFirstPage(firstPage);
         pdfInfo.setNumberOfPages(totalPages);
         paper.setPdfInfo(pdfInfo);
@@ -139,8 +152,7 @@ public class DownloadPdfs {
     private String insertUserAndPassword(String urlString) {
         Properties prop = PropertiesGetter.getInstance();
         
-        String filename = this.eventData.getXlsxFileName().replace(" ", "_");
-        filename = filename.substring(0, filename.lastIndexOf('.'));
+        String filename = this.eventData.getXlsxFileName();
         
         String user = prop.getProperty(PropertiesConfig.getUserPropertyName(filename));
         String password = prop.getProperty(PropertiesConfig.getPasswordPropertyName(filename));

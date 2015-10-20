@@ -3,7 +3,6 @@ package insertdoi.event;
 import insertdoi.paper.PaperData;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EventData {
@@ -23,6 +22,6 @@ public class EventData {
     }
     
     public List<PaperData> getPapers(){
-        return Collections.unmodifiableList(this.papers);
+        return this.papers;
     }
 }

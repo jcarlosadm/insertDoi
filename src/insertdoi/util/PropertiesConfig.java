@@ -16,14 +16,21 @@ public class PropertiesConfig {
     private static final String PROPERTY_DEFAULT_DOI_STRING = "default_doi_string";
     private static final String PROPERTY_EVENT_NAME = "event";
     private static final String PROPERTY_SUBEVENT_NAME = "subevent";
+    private static final String PROPERTY_PDF_SUFFIX_NAME = "pdf_suffix";
     private static final String PROPERTY_YEAR = "year";
     
-    private static final String PROPERTY_XML_DOIBATCH_VERSION = "xml.doibatch.version";
-    private static final String PROPERTY_XML_DOIBATCH_XSI_SCHEMALOCATION = "xml.doibatch.xsi_schemalocation";
-    private static final String PROPERTY_XML_DOIBATCH_HEAD_DOIBATCH_ID = "xml.doibatch.head.doi_batch_id";
-    private static final String PROPERTY_XML_DOIBATCH_HEAD_TIMESTAMP = "xml.doibatch.head.timestamp";
-    private static final String PROPERTY_XML_DOIBATCH_HEAD_DEPOSITOR_NAME = "xml.doibatch.head.depositor.name";
-    private static final String PROPERTY_XML_DOIBATCH_HEAD_EMAIL_ADDRESS = "xml.doibatch.head.email_address";
+    private static final String PROPERTY_XML_DOIBATCH_VERSION = 
+            "xml.doibatch.version";
+    private static final String PROPERTY_XML_DOIBATCH_XSI_SCHEMALOCATION = 
+            "xml.doibatch.xsi_schemalocation";
+    private static final String PROPERTY_XML_DOIBATCH_HEAD_DOIBATCH_ID = 
+            "xml.doibatch.head.doi_batch_id";
+    private static final String PROPERTY_XML_DOIBATCH_HEAD_TIMESTAMP = 
+            "xml.doibatch.head.timestamp";
+    private static final String PROPERTY_XML_DOIBATCH_HEAD_DEPOSITOR_NAME = 
+            "xml.doibatch.head.depositor.name";
+    private static final String PROPERTY_XML_DOIBATCH_HEAD_EMAIL_ADDRESS = 
+            "xml.doibatch.head.email_address";
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_METADATA_FULL_TITLE = 
             "xml.doibatch.body.journal_metadata.full_title";
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_METADATA_ABBREV_TITLE = 
@@ -32,7 +39,8 @@ public class PropertiesConfig {
             "xml.doibatch.body.journal_metadata.issn_electronic";
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_METADATA_ISSN_PRINT = 
             "xml.doibatch.body.journal_metadata.issn_print";
-    private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_ISSUE_PUBLICATION_DATE_MEDIA_TYPE = 
+    private static final String 
+    PROPERTY_XML_DOIBATCH_BODY_JOURNAL_ISSUE_PUBLICATION_DATE_MEDIA_TYPE = 
             "xml.doibatch.body.journal_issue.publication_date.media_type";
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_ISSUE_PUBLICATION_DATE_DAY =
             "xml.doibatch.body.journal_issue.publication_date.day";
@@ -75,11 +83,19 @@ public class PropertiesConfig {
         return PROPERTY_ARTICLES_FOLDER_NAME;
     }
     
+    private static String parseFilename(String filename){
+        String filenameParsed = filename.replace(" ", "_");
+        filenameParsed = filenameParsed.substring(0, filenameParsed.lastIndexOf('.'));
+        return filenameParsed;
+    }
+    
     public static String getUserPropertyName(String filename){
+        filename = parseFilename(filename);
         return (filename+"."+PROPERTY_USER_SUFFIX);
     }
     
     public static String getPasswordPropertyName(String filename){
+        filename = parseFilename(filename);
         return (filename+"."+PROPERTY_PASSWORD_SUFFIX);
     }
     
@@ -92,11 +108,18 @@ public class PropertiesConfig {
     }
 
     public static String getPropertyEventName(String filename) {
+        filename = parseFilename(filename);
         return filename+"."+PROPERTY_EVENT_NAME;
     }
 
     public static String getPropertySubeventName(String filename) {
+        filename = parseFilename(filename);
         return filename+"."+PROPERTY_SUBEVENT_NAME;
+    }
+    
+    public static String getPropertyPdfSuffixName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_PDF_SUFFIX_NAME;
     }
 
     public static String getPropertyYear() {

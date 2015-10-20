@@ -16,9 +16,13 @@ import insertdoi.xml.issues.build.BuildXmlIssues;
 import java.io.File;
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
+
 public class Main {
     
     public static void main(String[] args) {
+        BasicConfigurator.configure();
+        
         String resourcesFolderName = "./";
         if (PropertiesConfig.getResourcesFolderName() != "") {
             resourcesFolderName = PropertiesConfig.getResourcesFolderName() + File.separator;
@@ -33,12 +37,14 @@ public class Main {
         
         PdfMap pdfMap = new PdfMap();
         
+        int firstpageNextPaper = 1;
+        
         for (String fileName : xlsxFilesName) {
             XlsxReader xlsxReader = new XlsxReader(resourcesFolderName+fileName);
             EventData eventData = xlsxReader.getEventData();
             
             DownloadPdfs downloadPdfs = new DownloadPdfs(eventData);
-            downloadPdfs.run(pdfMap);
+            firstpageNextPaper = downloadPdfs.run(pdfMap, firstpageNextPaper);
             
             BuildDoi buildDoi = new BuildDoi(eventData);
             buildDoi.run();

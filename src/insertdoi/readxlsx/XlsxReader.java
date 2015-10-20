@@ -3,6 +3,8 @@ package insertdoi.readxlsx;
 import insertdoi.event.EventData;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
 
 import java.io.File;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,6 +31,8 @@ public class XlsxReader {
     private static final String COLUMN_STATUS_NAME = "Status";
     private static final String COLUMN_EXTRA_FILES_NAME = "Extra files";
     private static final String COLUMN_ABSTRACT_NAME = "Abstract";
+    
+    private static final boolean EXCLUDE_ARTICLES_WITHOUT_PDF = true;
     
     private String fileName = "";
     
@@ -67,7 +72,42 @@ public class XlsxReader {
             ErrorWindow.run("Error to read xlsx file");
         }
         
+        if (EXCLUDE_ARTICLES_WITHOUT_PDF) {
+            eventData = excludePapersWithoutPdf(eventData);
+        }
+        
         return eventData;
+    }
+
+    private EventData excludePapersWithoutPdf(EventData eventData) {
+        
+        String filename = eventData.getXlsxFileName();
+        
+        for (Iterator<PaperData> iterator = eventData.getPapers().iterator(); 
+                iterator.hasNext();) {
+            PaperData paper = (PaperData) iterator.next();
+            
+            if (!this.searchPdf(paper, filename)) {
+                iterator.remove();
+            }
+        }
+        
+        return eventData;
+    }
+
+    private boolean searchPdf(PaperData paper, String filename) {
+        Properties prop = PropertiesGetter.getInstance();
+        
+        String suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(filename));
+        suffix += ".pdf";
+        
+        for (String url : paper.getUrls()) {
+            if (url.endsWith(suffix)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private void fillColumnMap(Row row) {
