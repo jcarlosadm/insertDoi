@@ -87,5 +87,6 @@ public class ProgressBar {
     
     public void closeProgressBar(){
         this.frame.dispose();
+        progressBarInstance = null;
     }
 }

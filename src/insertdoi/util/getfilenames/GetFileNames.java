@@ -2,6 +2,7 @@ package insertdoi.util.getfilenames;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GetFileNames {
@@ -16,6 +17,8 @@ public class GetFileNames {
                 fileNames.add(file.getName());
             }
         }
+        
+        Collections.sort(fileNames);
         
         return fileNames;
     }

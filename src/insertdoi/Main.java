@@ -2,6 +2,7 @@ package insertdoi;
 
 import insertdoi.builddoi.BuildDoi;
 import insertdoi.event.EventData;
+import insertdoi.event.sections.Section;
 import insertdoi.paper.PaperData;
 import insertdoi.pdfs.PdfMap;
 import insertdoi.pdfs.download.DownloadPdfs;
@@ -51,7 +52,10 @@ public class Main {
             
             for (PaperData paper : eventData.getPapers()) {
                 buildXmlDoiBatch.addPaper(paper);
-                buildXmlIssues.addPaper(paper);
+            }
+            
+            for (Section section : eventData.getSections()) {
+                buildXmlIssues.addSection(section);
             }
         }
         

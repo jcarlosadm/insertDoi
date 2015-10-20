@@ -1,5 +1,6 @@
 package insertdoi.xml.issues.build;
 
+import insertdoi.event.sections.Section;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
@@ -38,11 +39,11 @@ public class BuildXmlIssues {
     
     private static final String LANGUAGE_NAME = "language";
     private static final String LANGUAGE_VALUE_PT = "pt";
-
-    private List<PaperData> papers = new ArrayList<PaperData>();
     
-    public void addPaper(PaperData paper){
-        this.papers.add(paper);
+    private List<Section> sections = new ArrayList<Section>();
+    
+    public void addSection(Section section){
+        this.sections.add(section);
     }
     
     public void run(){
@@ -56,9 +57,12 @@ public class BuildXmlIssues {
             this.setRootProperties(rootElement, doc);
             doc.appendChild(rootElement);
             
-            Element section = addElementsToRoot(doc, rootElement);
+            this.addElementsToRoot(doc, rootElement);
             
-            this.addElementsToSection(doc, section);
+            for (Section section : sections) {
+                Element sectionElement = createSection(doc, rootElement);
+                this.addElementsToSection(doc, section, sectionElement);
+            }
             
             this.saveXmlFile(doc);
             
@@ -67,45 +71,49 @@ public class BuildXmlIssues {
         }
     }
 
-    private void addElementsToSection(Document doc, Element section) {
-        addPreSectionElements(doc, section);
-        this.addArticles(doc, section);
+    private Element createSection(Document doc, Element rootElement) {
+        return this.addElement("section", rootElement, doc);
     }
 
-    private void addPreSectionElements(Document doc, Element section) {
+    private void addElementsToSection(Document doc, Section section, Element sectionElement) {
+        this.addPreSectionElements(doc, section, sectionElement);
+        this.addArticles(doc, section, sectionElement);
+    }
+
+    private void addPreSectionElements(Document doc, Section section, Element sectionElement) {
         Element tempElement = null;
         Properties prop = PropertiesGetter.getInstance();
         
-        tempElement = this.addElement("title", section, doc);
+        tempElement = this.addElement("title", sectionElement, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
-        this.addTextNodeToElement(tempElement, doc, "Artigos");
+        this.addTextNodeToElement(tempElement, doc, section.getTitle());
         
-        tempElement = this.addElement("title", section, doc);
+        /*tempElement = this.addElement("title", section, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_EN_US);
-        this.addTextNodeToElement(tempElement, doc, "Articles");
+        this.addTextNodeToElement(tempElement, doc, "Articles");*/
         
-        tempElement = this.addElement("abbrev", section, doc);
+        tempElement = this.addElement("abbrev", sectionElement, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
-        this.addTextNodeToElement(tempElement, doc, "ART-L");
+        this.addTextNodeToElement(tempElement, doc, section.getAbbrev());
         
-        tempElement = this.addElement("abbrev", section, doc);
+        /*tempElement = this.addElement("abbrev", section, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_EN_US);
-        this.addTextNodeToElement(tempElement, doc, "ART");
+        this.addTextNodeToElement(tempElement, doc, "ART");*/
         
-        tempElement = this.addElement("policy", section, doc);
+        tempElement = this.addElement("policy", sectionElement, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
         this.addTextNodeToElement(tempElement, doc, prop.getProperty(
                 PropertiesConfig.getPropertyXmlIssuePolicyPtBr()));
         
-        tempElement = this.addElement("policy", section, doc);
+        /*tempElement = this.addElement("policy", section, doc);
         this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_EN_US);
         this.addTextNodeToElement(tempElement, doc, prop.getProperty(
-                PropertiesConfig.getPropertyXmlIssuePolicyEnUs()));
+                PropertiesConfig.getPropertyXmlIssuePolicyEnUs()));*/
     }
 
-    private void addArticles(Document doc, Element section) {
-        for (PaperData paper : papers) {
-            this.addArticle(paper, doc, section);
+    private void addArticles(Document doc, Section section, Element sectionElement) {
+        for (PaperData paper : section.getPapers()) {
+            this.addArticle(paper, doc, sectionElement);
         }
     }
 
@@ -208,20 +216,25 @@ public class BuildXmlIssues {
         int firstIndex = nameWithAffiliation.lastIndexOf("-")+2;
         int secondIndex = nameWithAffiliation.lastIndexOf(")");
         
-        for (Locale locale : Locale.getAvailableLocales()) {
-            if (locale.getDisplayCountry() == nameWithAffiliation
-                    .substring(firstIndex, secondIndex)) {
-                return locale.toString();
+        try {
+            for (Locale locale : Locale.getAvailableLocales()) {
+                
+                if (locale.getDisplayCountry() == nameWithAffiliation
+                        .substring(firstIndex, secondIndex)) {
+                    return locale.toString();
+                }
             }
-        }
-        
-        switch (nameWithAffiliation.substring(firstIndex, secondIndex)) {
-        case "Brazil":
-            return LOCALE_VALUE_PT_BR;
-        case "US":
-            return LOCALE_VALUE_EN_US;
-        case "Spain":
-            return LOCALE_VALUE_SPAIN;
+            
+            switch (nameWithAffiliation.substring(firstIndex, secondIndex)) {
+            case "Brazil":
+                return LOCALE_VALUE_PT_BR;
+            case "US":
+                return LOCALE_VALUE_EN_US;
+            case "Spain":
+                return LOCALE_VALUE_SPAIN;
+            }
+        } catch (Exception e) {
+            
         }
         
         return LOCALE_VALUE_PT_BR;
@@ -302,10 +315,20 @@ public class BuildXmlIssues {
         this.addTextNodeToElement(doiElement, doc, paper.getDoiString());
     }
 
-    private Element addElementsToRoot(Document doc, Element rootElement) {
+    private void addElementsToRoot(Document doc, Element rootElement) {
         Element tempElement = null;
         
         Properties prop = PropertiesGetter.getInstance();
+        
+        tempElement = this.addElement("title", rootElement, doc);
+        this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
+        this.addTextNodeToElement(tempElement, doc, prop.getProperty(
+                PropertiesConfig.getPropertyTitleName()));
+        
+        tempElement = this.addElement("description", rootElement, doc);
+        this.addAttributeToElement(tempElement, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
+        this.addTextNodeToElement(tempElement, doc, prop.getProperty(
+                PropertiesConfig.getPropertyDescriptionName()));
         
         tempElement = this.addElement("volume", rootElement, doc);
         this.addTextNodeToElement(tempElement, doc, prop.getProperty(
@@ -317,8 +340,6 @@ public class BuildXmlIssues {
         this.addTextNodeToElement(tempElement, doc,prop.getProperty(
                 PropertiesConfig.getPropertyXmlIssueYear()));
         this.addElement("open_access", rootElement, doc);
-        
-        return this.addElement("section", rootElement, doc);
     }
     
     private Element addElement(String elementName, Element parent, Document doc){
@@ -357,7 +378,7 @@ public class BuildXmlIssues {
         this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
         
         attributeName = "identification";
-        attributeValue = "num_vol_year";
+        attributeValue = "title";
         this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
         
         attributeName = "current";

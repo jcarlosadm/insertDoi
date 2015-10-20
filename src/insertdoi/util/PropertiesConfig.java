@@ -18,6 +18,13 @@ public class PropertiesConfig {
     private static final String PROPERTY_SUBEVENT_NAME = "subevent";
     private static final String PROPERTY_PDF_SUFFIX_NAME = "pdf_suffix";
     private static final String PROPERTY_YEAR = "year";
+    private static final String PROPERTY_BY_SECTION_NAME = "by_section";
+    private static final String PROPERTY_BY_SECTION_TITLE_NAME = "by_section.title";
+    private static final String PROPERTY_BY_SECTION_ABBREV_NAME = "by_section.abbrev";
+    private static final String PROPERTY_BY_TRACK_NAME = "by_track";
+    private static final String PROPERTY_BY_TRACK_TRACK_NAME = "track";
+    private static final String PROPERTY_BY_TRACK_TITLE_NAME = "section.title";
+    private static final String PROPERTY_BY_TRACK_ABBREV_NAME = "section.abbrev";
     
     private static final String PROPERTY_XML_DOIBATCH_VERSION = 
             "xml.doibatch.version";
@@ -55,6 +62,8 @@ public class PropertiesConfig {
     private static final String PROPERTY_XML_DOIBATCH_BODY_JOURNAL_ARTICLE_TYPE =
             "xml.doibatch.body.journal_article.type";
     
+    private static final String PROPERTY_TITLE_NAME = "xml.issue.title";
+    private static final String PROPERTY_DESCRIPTION_NAME = "xml.issue.description";
     private static final String PROPERTY_XML_ISSUE_VOLUME = "xml.issue.volume";
     private static final String PROPERTY_XML_ISSUE_NUMBER = "xml.issue.number";
     private static final String PROPERTY_XML_ISSUE_YEAR = "xml.issue.year";
@@ -124,6 +133,49 @@ public class PropertiesConfig {
 
     public static String getPropertyYear() {
         return PROPERTY_YEAR;
+    }
+    
+    public static String getPropertyBySectionName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_SECTION_NAME;
+    }
+    
+    public static String getPropertyBySectionTitleName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_SECTION_TITLE_NAME;
+    }
+    
+    public static String getPropertyBySectionAbbrevName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_SECTION_ABBREV_NAME;
+    }
+    
+    public static String getPropertyByTrackName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_TRACK_NAME;
+    }
+    
+    public static String getPropertyByTrackTrackName(String filename, int order){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_TRACK_NAME;
+    }
+    
+    public static String getPropertyByTrackTitleName(String filename, int order){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_TITLE_NAME;
+    }
+    
+    public static String getPropertyByTrackAbbrevName(String filename, int order){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_ABBREV_NAME;
+    }
+    
+    public static String getPropertyTitleName(){
+        return PROPERTY_TITLE_NAME;
+    }
+    
+    public static String getPropertyDescriptionName(){
+        return PROPERTY_DESCRIPTION_NAME;
     }
 
     public static String getPropertyXmlDoibatchVersion() {

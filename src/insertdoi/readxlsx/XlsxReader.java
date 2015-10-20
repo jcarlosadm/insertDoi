@@ -1,6 +1,10 @@
 package insertdoi.readxlsx;
 
 import insertdoi.event.EventData;
+import insertdoi.event.sections.Section;
+import insertdoi.event.sections.store.StoreSection;
+import insertdoi.event.sections.store.StoreSections;
+import insertdoi.event.sections.store.StoreSectionsByTrack;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
@@ -36,6 +40,8 @@ public class XlsxReader {
     
     private String fileName = "";
     
+    private StoreSections storeSection = null;
+    
     private Map<Integer, String> columnMap = new HashMap<Integer, String>();
     
     public XlsxReader(String fileName) {
@@ -46,6 +52,8 @@ public class XlsxReader {
         EventData eventData = new EventData();
         eventData.setXlsxFileName(this.fileName.substring(this.fileName
                 .lastIndexOf(File.separator)+1));
+        
+        this.defineStoreSection(eventData);
         
         File file = new File(this.fileName);
         XSSFWorkbook xssfWorkbook = null;
@@ -76,7 +84,40 @@ public class XlsxReader {
             eventData = excludePapersWithoutPdf(eventData);
         }
         
+        this.makeStoreSections(eventData);
+        
         return eventData;
+    }
+
+    private void makeStoreSections(EventData eventData) {
+        eventData.setSections(this.storeSection.getSections());
+        
+        for (PaperData paper : eventData.getPapers()) {
+            Section section = this.storeSection.getSection(paper);
+            section.addPaper(paper);
+        }
+    }
+
+    private void defineStoreSection(EventData eventData) {
+        Properties prop = PropertiesGetter.getInstance();
+        
+        String bySection = prop.getProperty(PropertiesConfig.getPropertyBySectionName(
+                eventData.getXlsxFileName()));
+        
+        if (Boolean.valueOf(bySection)) {
+            this.storeSection = new StoreSection(eventData.getXlsxFileName());
+        } else {
+            String byTrack = prop.getProperty(PropertiesConfig.getPropertyByTrackName(
+                    eventData.getXlsxFileName()));
+            
+            if (Boolean.valueOf(byTrack)) {
+                this.storeSection = new StoreSectionsByTrack(eventData.getXlsxFileName());
+            }
+        }
+        
+        if (this.storeSection == null) {
+            ErrorWindow.run("Sections not defined");
+        }
     }
 
     private EventData excludePapersWithoutPdf(EventData eventData) {
