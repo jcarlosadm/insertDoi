@@ -25,6 +25,7 @@ public class PropertiesConfig {
     private static final String PROPERTY_BY_TRACK_TRACK_NAME = "track";
     private static final String PROPERTY_BY_TRACK_TITLE_NAME = "section.title";
     private static final String PROPERTY_BY_TRACK_ABBREV_NAME = "section.abbrev";
+    private static final String PROPERTY_BY_TRACK_SUFFIX_NAME = "section.suffix";
     
     private static final String PROPERTY_XML_DOIBATCH_VERSION = 
             "xml.doibatch.version";
@@ -168,6 +169,11 @@ public class PropertiesConfig {
     public static String getPropertyByTrackAbbrevName(String filename, int order){
         filename = parseFilename(filename);
         return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_ABBREV_NAME;
+    }
+    
+    public static String getPropertyByTrackSuffixName(String filename, int order){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_SUFFIX_NAME;
     }
     
     public static String getPropertyTitleName(){

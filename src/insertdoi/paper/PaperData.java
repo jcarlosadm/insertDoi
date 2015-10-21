@@ -15,6 +15,7 @@ public class PaperData {
     private String resume = "";
     private List<Author> authors = new ArrayList<Author>();
     private List<String> urls = new ArrayList<String>();
+    private String pdfUrlFinal = "";
     private PdfInfo pdfInfo = null;
     private String doiString = "";
 
@@ -80,6 +81,14 @@ public class PaperData {
     
     public String getDoiString(){
         return this.doiString;
+    }
+
+    public String getPdfUrlFinal() {
+        return this.pdfUrlFinal;
+    }
+
+    public void setPdfUrlFinal(String pdfUrlFinal) {
+        this.pdfUrlFinal = pdfUrlFinal;
     }
 
 }

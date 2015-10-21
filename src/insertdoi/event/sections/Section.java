@@ -8,6 +8,7 @@ import java.util.List;
 public class Section {
     private String title = "";
     private String abbrev = "";
+    private String suffix = "";
     private List<PaperData> papers = new ArrayList<PaperData>();
 
     public String getTitle() {
@@ -32,5 +33,13 @@ public class Section {
 
     public void addPaper(PaperData paper){
         this.papers.add(paper);
+    }
+
+    public String getSuffix() {
+        return this.suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

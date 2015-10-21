@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class StoreSection implements StoreSections {
+public class StoreSectionUnique implements StoreSections {
 
     private Section section = null;
     private List<Section> sections = new ArrayList<Section>();
     
-    public StoreSection(String filename) {
+    public StoreSectionUnique(String filename) {
         Properties prop = PropertiesGetter.getInstance();
         
         Section section = new Section();

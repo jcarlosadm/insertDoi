@@ -31,6 +31,8 @@ public class StoreSectionsByTrack implements StoreSections {
                     .getPropertyByTrackTitleName(filename, order)));
             section.setAbbrev(prop.getProperty(PropertiesConfig
                     .getPropertyByTrackAbbrevName(filename, order)));
+            section.setSuffix(prop.getProperty(PropertiesConfig.
+                    getPropertyByTrackSuffixName(filename, order)));
             
             this.mapSections.put(trackName, section);
             this.sections.add(section);

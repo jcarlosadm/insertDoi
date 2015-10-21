@@ -69,21 +69,7 @@ public class DownloadPdfs {
     private int downloadPdf(PaperData paper, ProgressBar progressBar, int firstPage,
             PdfMap pdfMap) {
         
-        String xlsxfilename = this.eventData.getXlsxFileName();
-        
-        Properties prop = PropertiesGetter.getInstance();
-        String suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(xlsxfilename));
-        suffix += ".pdf";
-        
-        String urlString = "";
-        
-        for (String url : paper.getUrls()) {
-            if (url.endsWith(suffix)) {
-                urlString = url;
-            }
-        }
-        
-        urlString = this.insertUserAndPassword(urlString);
+        String urlString = this.insertUserAndPassword(paper.getPdfUrlFinal());
         String pdfname = this.getFilenameFromUrl(urlString);
         
         int totalPages = this.getfile(urlString, pdfname);

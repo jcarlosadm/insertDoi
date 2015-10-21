@@ -43,7 +43,9 @@ public class BuildXmlIssues {
     private List<Section> sections = new ArrayList<Section>();
     
     public void addSection(Section section){
-        this.sections.add(section);
+        if (!this.sections.contains(section)) {
+            this.sections.add(section);
+        }
     }
     
     public void run(){

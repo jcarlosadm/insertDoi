@@ -2,9 +2,10 @@ package insertdoi.readxlsx;
 
 import insertdoi.event.EventData;
 import insertdoi.event.sections.Section;
-import insertdoi.event.sections.store.StoreSection;
+import insertdoi.event.sections.store.StoreSectionUnique;
 import insertdoi.event.sections.store.StoreSections;
 import insertdoi.event.sections.store.StoreSectionsByTrack;
+import insertdoi.event.sections.store.StoreSectionsSingleton;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
@@ -105,7 +106,7 @@ public class XlsxReader {
                 eventData.getXlsxFileName()));
         
         if (Boolean.valueOf(bySection)) {
-            this.storeSection = new StoreSection(eventData.getXlsxFileName());
+            this.storeSection = new StoreSectionUnique(eventData.getXlsxFileName());
         } else {
             String byTrack = prop.getProperty(PropertiesConfig.getPropertyByTrackName(
                     eventData.getXlsxFileName()));
@@ -116,7 +117,7 @@ public class XlsxReader {
         }
         
         if (this.storeSection == null) {
-            ErrorWindow.run("Sections not defined");
+            this.storeSection = new StoreSectionsSingleton();
         }
     }
 
@@ -137,13 +138,22 @@ public class XlsxReader {
     }
 
     private boolean searchPdf(PaperData paper, String filename) {
-        Properties prop = PropertiesGetter.getInstance();
+        // TODO add url field to PaperData to correct pdf
         
-        String suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(filename));
-        suffix += ".pdf";
+        Properties prop = PropertiesGetter.getInstance();
+        String suffix = "";
+        
+        Section section = this.storeSection.getSection(paper);
+        if (section.getSuffix() != null && section.getSuffix() != "") {
+            suffix = section.getSuffix() + ".pdf";
+        } else {
+            suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(filename));
+            suffix += ".pdf";
+        }
         
         for (String url : paper.getUrls()) {
             if (url.endsWith(suffix)) {
+                paper.setPdfUrlFinal(url);
                 return true;
             }
         }
