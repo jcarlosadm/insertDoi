@@ -358,12 +358,15 @@ public class BuildXmlIssues {
     }
     
     private void saveXmlFile(Document doc) {
+        Properties prop = PropertiesGetter.getInstance();
+        
         TransformerFactory transFactory = TransformerFactory.newInstance();
         try {
             Transformer transformer = transFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(PropertiesConfig.getOutputFolderName()
-                    +File.separator+"issue.xml"));
+                    +File.separator+prop.getProperty(PropertiesConfig
+                            .getPropertyTitleName())+".xml"));
             transformer.transform(source, result);
         } catch (TransformerConfigurationException e) {
             ErrorWindow.run("Error to configure xml to save");
