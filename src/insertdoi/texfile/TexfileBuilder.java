@@ -1,11 +1,10 @@
 package insertdoi.texfile;
 
-import insertdoi.pdfs.PdfMap;
+import insertdoi.event.sections.Section;
+import insertdoi.paper.PaperData;
+import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
-import insertdoi.xml.doibatch.read.ReadXml;
-import insertdoi.xml.doibatch.read.articles.ArticleInfo;
-import insertdoi.xml.doibatch.read.articles.Contributor;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,7 +17,15 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 
 public class TexfileBuilder {
     
-    public void run(PdfMap pdfMap) {
+    private List<Section> sections = new ArrayList<Section>();
+    
+    public void addSection(Section section){
+        if (!this.sections.contains(section)) {
+            this.sections.add(section);
+        }
+    }
+    
+    public void run() {
         File file = new File(PropertiesConfig.getOutputFolderName()+File.separator
                 +PropertiesConfig.getTexFileName());
         
@@ -29,33 +36,40 @@ public class TexfileBuilder {
             ErrorWindow.run("Fail to create file articles.tex");
         }
         
-        this.insertArticles(output, pdfMap);
+        this.insertArticles(output);
         
         try {
             output.close();
         } catch (IOException e) {}
     }
 
-    private void insertArticles(BufferedWriter output, PdfMap pdfMap) {
-        ReadXml readXml = new ReadXml(PropertiesConfig.getOutputFolderName()+File.separator
-                +PropertiesConfig.getXmlFileName());
-        readXml.readAllArticles();
-        List<ArticleInfo> articleInfoList = readXml.getArticleInfoList();
+    private void insertArticles(BufferedWriter output) {
         writeHeader(output);
         
-        for (ArticleInfo articleInfo : articleInfoList) {
-            String fileName = getPdfFilename(articleInfo, pdfMap);
-            writeArticle(articleInfo, fileName, output);
+        for (Section section : this.sections) {
+            this.writeSection(section, output);
         }
     }
     
-    private String getPdfFilename(ArticleInfo articleInfo, PdfMap pdfMap) {
+    private void writeSection(Section section, BufferedWriter output) {
+        try {
+            output.write("\n    \\session{"+section.getTitle()+"}\n");
+        } catch (IOException e) {
+            ErrorWindow.run("Error to write in file");
+        }
+        
+        for (PaperData paper : section.getPapers()) {
+            this.writeArticle(paper, output);
+        }
+    }
+
+    /*private String getPdfFilename(PaperData paper, BufferedWriter output) {
         String title = articleInfo.getArticleTitlesList().get(0);
         String pdfName = pdfMap.getPdfInfo(title).getName();
         pdfName = pdfName.substring(0, pdfName.lastIndexOf("."));
         
         return pdfName;
-    }
+    }*/
 
     private void writeHeader(BufferedWriter output) {
         try {
@@ -67,13 +81,14 @@ public class TexfileBuilder {
         }
     }
     
-    private void writeArticle(ArticleInfo articleInfo, String fileName,
-            BufferedWriter output) {
+    private void writeArticle(PaperData paper, BufferedWriter output) {
         
-        String doi = articleInfo.getDoi();
-        String title = articleInfo.getArticleTitlesList().get(0);
-        String authors = makeAuthors(articleInfo);
-        String index = makeIndex(articleInfo);
+        String doi = paper.getDoiString();
+        String title = paper.getTitle();
+        String authors = makeAuthors(paper);
+        String index = makeIndex(paper);
+        String filename = paper.getPdfInfo().getName();
+        filename = filename.substring(0, filename.lastIndexOf('.'));
         
         try {
             output.write("\n");
@@ -82,7 +97,7 @@ public class TexfileBuilder {
             output.write("    title={"+title+"},%"+"\n");
             output.write("    author={"+authors+"},%"+"\n");
             output.write("    index={"+index+"}%"+"\n");
-            output.write("    ]{"+fileName+"}"+"\n");
+            output.write("    ]{"+filename+"}"+"\n");
             
         } catch (IOException e) {
             ErrorWindow.run("Error to write in file");
@@ -90,15 +105,17 @@ public class TexfileBuilder {
         
     }
     
-    private String makeIndex(ArticleInfo articleInfo) {
+    private String makeIndex(PaperData paper) {
         
         List<String> authorList = new ArrayList<String>();
         
+        String name = "";
         String givenName = "";
         String surname = "";
-        for (Contributor contributor : articleInfo.getContributorsList()) {
-            givenName = contributor.getGivenName();
-            surname = contributor.getSurname();
+        for (Author author : paper.getAuthors()) {
+            name = author.getName();
+            givenName = name.substring(0, name.lastIndexOf(' '));
+            surname = name.substring(name.lastIndexOf(' ')+1);
             authorList.add("\\index{"+surname+", "+givenName+"}");
         }
         
@@ -110,22 +127,14 @@ public class TexfileBuilder {
         return index;
     }
 
-    private String makeAuthors(ArticleInfo articleInfo) {
+    private String makeAuthors(PaperData paper) {
         
-        List<String> authorList = new ArrayList<String>();
         String authors = "";
         
-        String givenName = "";
-        String surname = "";
-        for (Contributor contributor : articleInfo.getContributorsList()) {
-            givenName = contributor.getGivenName();
-            surname = contributor.getSurname();
-            authorList.add(givenName+" "+surname);
-        }
-        
-        for (Iterator<String> iterator = authorList.iterator(); iterator.hasNext();) {
-            String author = (String) iterator.next();
-            authors += author;
+        for (Iterator<Author> iterator = paper.getAuthors().iterator(); iterator.hasNext();) {
+            Author author = (Author) iterator.next();
+            authors += author.getName();
+            
             if(iterator.hasNext()){
                 authors += ", ";
             }
