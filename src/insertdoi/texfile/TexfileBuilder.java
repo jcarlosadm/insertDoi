@@ -73,9 +73,11 @@ public class TexfileBuilder {
 
     private void writeHeader(BufferedWriter output) {
         try {
-            output.write("    \\def \\doinumber{}"+"\n");
+            /*output.write("    \\def \\doinumber{}"+"\n");
             output.write("    \\renewcommand{\\proccfoot}"+
-                    "{ \\thepage \\linebreak doi: \\doinumber}"+"\n");
+                    "{ \\thepage \\linebreak doi: \\doinumber}"+"\n");*/
+            output.write("    \\renewcommand{\\proccfoot}{}\n");
+            output.write("    \\renewcommand{\\proclhead}{}\n");
         } catch (IOException e) {
             ErrorWindow.run("Error to write in file");
         }
@@ -83,7 +85,7 @@ public class TexfileBuilder {
     
     private void writeArticle(PaperData paper, BufferedWriter output) {
         
-        String doi = paper.getDoiString();
+        //String doi = paper.getDoiString();
         String title = paper.getTitle();
         String authors = makeAuthors(paper);
         String index = makeIndex(paper);
@@ -92,7 +94,7 @@ public class TexfileBuilder {
         
         try {
             output.write("\n");
-            output.write("    \\def \\doinumber{"+doi+"}"+"\n");
+            //output.write("    \\def \\doinumber{"+doi+"}"+"\n");
             output.write("    \\procpaper[%OK"+"\n");
             output.write("    title={"+title+"},%"+"\n");
             output.write("    author={"+authors+"},%"+"\n");

@@ -138,7 +138,6 @@ public class XlsxReader {
     }
 
     private boolean searchPdf(PaperData paper, String filename) {
-        // TODO add url field to PaperData to correct pdf
         
         Properties prop = PropertiesGetter.getInstance();
         String suffix = "";

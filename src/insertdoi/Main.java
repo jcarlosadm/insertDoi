@@ -7,6 +7,7 @@ import insertdoi.pdfs.PdfMap;
 import insertdoi.pdfs.download.DownloadPdfs;
 import insertdoi.pdfs.writer.PdfWriter;
 import insertdoi.readxlsx.XlsxReader;
+import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
@@ -31,7 +32,7 @@ public class Main {
         
         List<String> xlsxFilesName = GetFileNames.run(resourcesFolderName, extension);
         
-        //TexfileBuilder texfileBuilder = new TexfileBuilder();
+        TexfileBuilder texfileBuilder = new TexfileBuilder();
         BuildXmlIssues buildXmlIssues = new BuildXmlIssues();
         
         PdfMap pdfMap = new PdfMap();
@@ -53,12 +54,12 @@ public class Main {
             
             for (Section section : eventData.getSections()) {
                 buildXmlIssues.addSection(section);
-                //texfileBuilder.addSection(section);
+                texfileBuilder.addSection(section);
             }
         }
         
         buildXmlIssues.run();
-        //texfileBuilder.run();
+        texfileBuilder.run();
         
         FinishWindow.run();
     }
