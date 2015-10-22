@@ -9,6 +9,9 @@ public class PropertiesConfig {
     private static final String XML_FILE_NAME = "doiBatch.xml";
     private static final String TEX_FILE_NAME = "articles.tex";
     
+    private static final String PROPERTY_PDF_HEADER_FIRSTLINE_NAME = "pdf.header.firstline";
+    private static final String PROPERTY_PDF_HEADER_SECONDLINE_NAME = "pdf.header.secondline";
+    
     private static final String EXTENSION_XLSX_FILE = "xlsx";
     private static final String PROPERTY_ARTICLES_FOLDER_NAME = "articles_folder";
     private static final String PROPERTY_USER_SUFFIX = "user";
@@ -17,6 +20,7 @@ public class PropertiesConfig {
     private static final String PROPERTY_EVENT_NAME = "event";
     private static final String PROPERTY_SUBEVENT_NAME = "subevent";
     private static final String PROPERTY_PDF_SUFFIX_NAME = "pdf_suffix";
+    private static final String PROPERTY_BUILD_DOI_NAME = "build_doi";
     private static final String PROPERTY_YEAR = "year";
     private static final String PROPERTY_BY_SECTION_NAME = "by_section";
     private static final String PROPERTY_BY_SECTION_TITLE_NAME = "by_section.title";
@@ -130,6 +134,11 @@ public class PropertiesConfig {
     public static String getPropertyPdfSuffixName(String filename){
         filename = parseFilename(filename);
         return filename+"."+PROPERTY_PDF_SUFFIX_NAME;
+    }
+    
+    public static String getPropertyBuildDoiName(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_BUILD_DOI_NAME;
     }
 
     public static String getPropertyYear() {
@@ -254,6 +263,14 @@ public class PropertiesConfig {
 
     public static String getTexFileName() {
         return TEX_FILE_NAME;
+    }
+
+    public static String getPropertyPdfHeaderFirstlineName() {
+        return PROPERTY_PDF_HEADER_FIRSTLINE_NAME;
+    }
+
+    public static String getPropertyPdfHeaderSecondlineName() {
+        return PROPERTY_PDF_HEADER_SECONDLINE_NAME;
     }
 
     public static String getPropertyXmlIssueVolume() {

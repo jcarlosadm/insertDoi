@@ -145,11 +145,11 @@ public class XlsxReader {
         
         Section section = this.storeSection.getSection(paper);
         if (section.getSuffix() != null && section.getSuffix() != "") {
-            suffix = section.getSuffix() + ".pdf";
+            suffix = section.getSuffix();
         } else {
             suffix = prop.getProperty(PropertiesConfig.getPropertyPdfSuffixName(filename));
-            suffix += ".pdf";
         }
+        suffix += ".pdf";
         
         for (String url : paper.getUrls()) {
             if (url.endsWith(suffix)) {

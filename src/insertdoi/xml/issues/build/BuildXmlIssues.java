@@ -124,7 +124,9 @@ public class BuildXmlIssues {
         this.addAttributeToElement(article, doc, LOCALE_NAME, LOCALE_VALUE_PT_BR);
         this.addAttributeToElement(article, doc, LANGUAGE_NAME, LANGUAGE_VALUE_PT);
         
-        this.addDoiElement(article, paper, doc);
+        if (paper.getDoiString() != null && paper.getDoiString() != "") {
+            this.addDoiElement(article, paper, doc);
+        }
         this.addTitle(article, paper, doc);
         this.addAbstract(article, paper, doc);
         this.addIndexing(article, paper, doc);

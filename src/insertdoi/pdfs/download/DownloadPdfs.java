@@ -22,7 +22,9 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 public class DownloadPdfs {
     
-    private static final boolean EVEN_PAGES_ONLY = true;
+    private static final boolean EVEN_PAGES_ONLY = false;
+
+    private static final boolean ADJUST_SINGLE_PAGE = true;
     
     private EventData eventData = null;
     
@@ -107,6 +109,7 @@ public class DownloadPdfs {
         return getTotalPages(filename);
     }
 
+    @SuppressWarnings("unused")
     private int getTotalPages(String filename) {
         int numberOfPages = 0;
         
@@ -114,7 +117,7 @@ public class DownloadPdfs {
             PDDocument pdfFile = PDDocument.load(new File(filename));
             numberOfPages = pdfFile.getNumberOfPages();
             
-            if (numberOfPages == 1) {
+            if (ADJUST_SINGLE_PAGE && numberOfPages == 1) {
                 pdfFile.addPage(new PDPage());
                 pdfFile.save(filename);
                 numberOfPages = 2;

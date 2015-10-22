@@ -1,6 +1,7 @@
 package insertdoi.pdfs.writer;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -39,7 +40,7 @@ public class PdfWriter {
         String path = PropertiesConfig.getOutputFolderName() + File.separator
                 + foldername + File.separator + paper.getPdfInfo().getName();
 
-        PDFont font = PDType1Font.COURIER;
+        PDFont font = PDType1Font.TIMES_ROMAN;
         float fontSize = 12.0f;
 
         try {
@@ -65,7 +66,6 @@ public class PdfWriter {
 
     private void insertInfoOtherPages(PaperData paper, PDDocument pdfFile,
             PDPage page, PDFont font, float fontSize, int index) {
-        // TODO Auto-generated method stub
         
         try {
             PDPageContentStream contentStream = new PDPageContentStream(
@@ -85,13 +85,12 @@ public class PdfWriter {
 
     private void insertInfoInFirstPage(PaperData paper, PDDocument pdfFile,
             PDPage page, PDFont font, float fontSize) {
-        // TODO Auto-generated method stub
 
         try {
             PDPageContentStream contentStream = new PDPageContentStream(
                     pdfFile, page, true, true);
 
-            if (paper.getDoiString() != null) {
+            if (paper.getDoiString() != null && paper.getDoiString() != "") {
                 this.insertDoi(contentStream, paper.getDoiString(), font, fontSize);
             }
 
@@ -106,9 +105,21 @@ public class PdfWriter {
     }
 
     private void insertHeader(PDPageContentStream contentStream, PDFont font,
-            float fontSize) {
-        // TODO Auto-generated method stub
+            float fontSize) throws Exception {
+        Properties prop = PropertiesGetter.getInstance();
         
+        contentStream.beginText();
+        contentStream.setFont(font, fontSize);
+        
+        contentStream.newLineAtOffset(LIMIT_LEFT, 800f);
+        contentStream.showText(prop.getProperty(PropertiesConfig
+                .getPropertyPdfHeaderSecondlineName()));
+        
+        contentStream.newLineAtOffset(0f,15f);
+        contentStream.showText(prop.getProperty(PropertiesConfig
+                .getPropertyPdfHeaderFirstlineName()));
+        
+        contentStream.endText();
     }
 
     private void insertPage(PDPageContentStream contentStream, int page,
@@ -130,7 +141,7 @@ public class PdfWriter {
         contentStream.setFont(font, fontSize);
         
         contentStream.newLineAtOffset(LIMIT_LEFT, LIMIT_DOWN);
-        contentStream.showText(doiString);
+        contentStream.showText("DOI: "+doiString);
         
         contentStream.endText();
     }

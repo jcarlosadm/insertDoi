@@ -25,17 +25,24 @@ public class BuildDoi {
     }
 
     private void insertDoi(PaperData paper) {
+        
         Properties prop = PropertiesGetter.getInstance();
-        String doiString = prop.getProperty(PropertiesConfig.getPropertyDefaultDoiString());
-        
         String filename = this.eventData.getXlsxFileName();
+        boolean value = Boolean.valueOf(prop.getProperty(PropertiesConfig
+                .getPropertyBuildDoiName(filename)));
         
-        doiString += prop.getProperty(PropertiesConfig.getPropertyEventName(filename))+".";
-        doiString += prop.getProperty(PropertiesConfig.getPropertySubeventName(filename))+".";
-        doiString += prop.getProperty(PropertiesConfig.getPropertyYear())+".";
-        doiString += paper.getPdfInfo().getFirstPage();
-        
-        paper.setDoiString(doiString);
+        if (value == false) {
+            paper.setDoiString(null);
+        } else {
+            String doiString = prop.getProperty(PropertiesConfig.getPropertyDefaultDoiString());
+            
+            doiString += prop.getProperty(PropertiesConfig.getPropertyEventName(filename))+".";
+            doiString += prop.getProperty(PropertiesConfig.getPropertySubeventName(filename))+".";
+            doiString += prop.getProperty(PropertiesConfig.getPropertyYear())+".";
+            doiString += paper.getPdfInfo().getFirstPage();
+            
+            paper.setDoiString(doiString);
+        }
     }
     
 }
