@@ -6,6 +6,8 @@ public class PdfInfo {
 
     private int firstPage = 0;
     private int numberOfPages = 0;
+    
+    private boolean written = false;
 
     public String getName() {
         return this.name;
@@ -33,6 +35,14 @@ public class PdfInfo {
         if (numberOfPages > 0) {
             this.numberOfPages = numberOfPages;
         }
+    }
+    
+    public boolean isWritten(){
+        return this.written;
+    }
+    
+    public void setWritten(){
+        this.written = true;
     }
 
 }

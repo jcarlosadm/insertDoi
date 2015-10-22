@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -112,7 +111,7 @@ public class DownloadPdfs {
         int numberOfPages = 0;
         
         try {
-            PDDocument pdfFile = PDDocument.load(filename);
+            PDDocument pdfFile = PDDocument.load(new File(filename));
             numberOfPages = pdfFile.getNumberOfPages();
             
             if (numberOfPages == 1) {
@@ -128,8 +127,6 @@ public class DownloadPdfs {
             pdfFile.close();
         } catch (IOException e) {
             ErrorWindow.run("Error to read pdf file");
-        } catch (COSVisitorException e) {
-            ErrorWindow.run("Error to adjust pdf file");
         }
         
         return numberOfPages;

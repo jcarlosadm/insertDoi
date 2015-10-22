@@ -5,6 +5,7 @@ import insertdoi.event.EventData;
 import insertdoi.event.sections.Section;
 import insertdoi.pdfs.PdfMap;
 import insertdoi.pdfs.download.DownloadPdfs;
+import insertdoi.pdfs.writer.PdfWriter;
 import insertdoi.readxlsx.XlsxReader;
 import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
@@ -48,6 +49,9 @@ public class Main {
             
             BuildDoi buildDoi = new BuildDoi(eventData);
             buildDoi.run();
+            
+            PdfWriter pdfWriter = new PdfWriter(eventData);
+            pdfWriter.run();
             
             /*for (PaperData paper : eventData.getPapers()) {
                 buildXmlDoiBatch.addPaper(paper);
