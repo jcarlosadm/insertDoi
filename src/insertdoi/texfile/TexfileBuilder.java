@@ -87,6 +87,7 @@ public class TexfileBuilder {
         
         //String doi = paper.getDoiString();
         String title = paper.getTitle();
+        title = title.replace("&", "\\&");
         String authors = makeAuthors(paper);
         String index = makeIndex(paper);
         String filename = paper.getPdfInfo().getName();

@@ -143,6 +143,11 @@ public class XlsxReader {
         String suffix = "";
         
         Section section = this.storeSection.getSection(paper);
+        
+        if (section == null) {
+            return false;
+        }
+        
         if (section.getSuffix() != null && section.getSuffix() != "") {
             suffix = section.getSuffix();
         } else {

@@ -42,4 +42,15 @@ public class Section {
     public void setSuffix(String suffix) {
         this.suffix = suffix;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        boolean equal = false;
+        
+        if (obj != null && obj instanceof Section) {
+            equal = (obj.hashCode() == this.hashCode());
+        }
+        
+        return equal;
+    }
 }

@@ -74,7 +74,9 @@ public class PdfWriter {
             this.insertPage(contentStream, paper.getPdfInfo().getFirstPage() + index,
                     font, fontSize);
             
-            this.insertHeader(contentStream, font, fontSize);
+            float top = page.getMediaBox().getHeight();
+            
+            this.insertHeader(contentStream, font, fontSize, top);
 
             contentStream.close();
         } catch (Exception e) {
@@ -96,7 +98,9 @@ public class PdfWriter {
 
             this.insertPage(contentStream, paper.getPdfInfo().getFirstPage(), font, fontSize);
             
-            this.insertHeader(contentStream, font, fontSize);
+            float top = page.getMediaBox().getHeight();
+            
+            this.insertHeader(contentStream, font, fontSize, top);
 
             contentStream.close();
         } catch (Exception e) {
@@ -105,13 +109,13 @@ public class PdfWriter {
     }
 
     private void insertHeader(PDPageContentStream contentStream, PDFont font,
-            float fontSize) throws Exception {
+            float fontSize, float top) throws Exception {
         Properties prop = PropertiesGetter.getInstance();
         
         contentStream.beginText();
         contentStream.setFont(font, fontSize);
         
-        contentStream.newLineAtOffset(LIMIT_LEFT, 800f);
+        contentStream.newLineAtOffset(LIMIT_LEFT, top - 40f);
         contentStream.showText(prop.getProperty(PropertiesConfig
                 .getPropertyPdfHeaderSecondlineName()));
         

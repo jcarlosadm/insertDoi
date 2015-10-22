@@ -25,7 +25,7 @@ public class DownloadPdfs {
     private static final boolean EVEN_PAGES_ONLY = false;
 
     // TODO test in latex
-    private static final boolean ADJUST_SINGLE_PAGE = false;
+    private static final boolean ADJUST_SINGLE_PAGE = true;
     
     private EventData eventData = null;
     
