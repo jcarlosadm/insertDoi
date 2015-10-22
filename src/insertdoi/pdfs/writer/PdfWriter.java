@@ -56,6 +56,7 @@ public class PdfWriter {
                 }
             }
 
+            pdfFile.setAllSecurityToBeRemoved(true);
             pdfFile.save(new File(path));
             pdfFile.close();
             paper.getPdfInfo().setWritten();
