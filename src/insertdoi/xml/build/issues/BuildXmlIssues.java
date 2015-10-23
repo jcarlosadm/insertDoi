@@ -1,34 +1,22 @@
-package insertdoi.xml.issues.build;
+package insertdoi.xml.build.issues;
 
 import insertdoi.event.sections.Section;
 import insertdoi.paper.PaperData;
 import insertdoi.paper.author.Author;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
-import insertdoi.util.windows.errorwindow.ErrorWindow;
+import insertdoi.xml.build.BuildXml;
 import insertdoi.xml.doibatch.build.EncodePdfFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class BuildXmlIssues {
+public class BuildXmlIssues extends BuildXml {
 
     private static final String ROOT_ELEMENT_NAME = "issue";
     
@@ -45,31 +33,6 @@ public class BuildXmlIssues {
     public void addSection(Section section){
         if (!this.sections.contains(section)) {
             this.sections.add(section);
-        }
-    }
-    
-    public void run(String xmlfinalFilename){
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        
-        try {
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
-            
-            Element rootElement = doc.createElement(ROOT_ELEMENT_NAME);
-            this.setRootProperties(rootElement, doc);
-            doc.appendChild(rootElement);
-            
-            this.addElementsToRoot(doc, rootElement);
-            
-            for (Section section : sections) {
-                Element sectionElement = createSection(doc, rootElement);
-                this.addElementsToSection(doc, section, sectionElement);
-            }
-            
-            this.saveXmlFile(doc, xmlfinalFilename);
-            
-        } catch (ParserConfigurationException e) {
-            ErrorWindow.run("Error to create xml file");
         }
     }
 
@@ -319,7 +282,23 @@ public class BuildXmlIssues {
         this.addTextNodeToElement(doiElement, doc, paper.getDoiString());
     }
 
-    private void addElementsToRoot(Document doc, Element rootElement) {
+    @Override
+    protected void setRootProperties(Element rootElement, Document doc) {
+        String attributeName = "published";
+        String attributeValue = "true";
+        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
+        
+        attributeName = "identification";
+        attributeValue = "title";
+        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
+        
+        attributeName = "current";
+        attributeValue = "true";
+        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
+    }
+
+    @Override
+    protected void addElementsToRoot(Document doc, Element rootElement) {
         Element tempElement = null;
         
         Properties prop = PropertiesGetter.getInstance();
@@ -344,58 +323,15 @@ public class BuildXmlIssues {
         this.addTextNodeToElement(tempElement, doc,prop.getProperty(
                 PropertiesConfig.getPropertyXmlIssueYear()));
         this.addElement("open_access", rootElement, doc);
-    }
-    
-    private Element addElement(String elementName, Element parent, Document doc){
-        Element element = doc.createElement(elementName);
-        parent.appendChild(element);
         
-        return element;
-    }
-    
-    private void addTextNodeToElement(Element element, Document doc, String textNodeData){
-        if (textNodeData != null) {
-            element.appendChild(doc.createTextNode(textNodeData));
+        for (Section section : sections) {
+            Element sectionElement = createSection(doc, rootElement);
+            this.addElementsToSection(doc, section, sectionElement);
         }
     }
-    
-    private void saveXmlFile(Document doc, String xmlFinalFilename) {
-        
-        TransformerFactory transFactory = TransformerFactory.newInstance();
-        try {
-            Transformer transformer = transFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(PropertiesConfig.getOutputFolderName()
-                    +File.separator+xmlFinalFilename));
-            transformer.transform(source, result);
-        } catch (TransformerConfigurationException e) {
-            ErrorWindow.run("Error to configure xml to save");
-        } catch (TransformerException e) {
-            ErrorWindow.run("Error to save xml");
-        }
-    }
-    
-    private void setRootProperties(Element rootElement, Document doc) {
-        // Properties prop = PropertiesGetter.getInstance();
-        
-        String attributeName = "published";
-        String attributeValue = "true";
-        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
-        
-        attributeName = "identification";
-        attributeValue = "title";
-        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
-        
-        attributeName = "current";
-        attributeValue = "true";
-        this.addAttributeToElement(rootElement, doc, attributeName, attributeValue);
-    }
-    
-    private void addAttributeToElement(Element element, Document doc,
-            String attributeName, String attributeValue) {
-        
-        Attr attr = doc.createAttribute(attributeName);
-        attr.setValue(attributeValue);
-        element.setAttributeNode(attr);
+
+    @Override
+    protected String getRootElementName() {
+        return ROOT_ELEMENT_NAME;
     }
 }

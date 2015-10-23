@@ -12,7 +12,7 @@ import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
-import insertdoi.xml.issues.build.BuildXmlIssues;
+import insertdoi.xml.build.issues.BuildXmlIssues;
 
 import java.io.File;
 import java.util.List;
