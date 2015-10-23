@@ -13,6 +13,7 @@ import insertdoi.util.PropertiesGetter;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
 import insertdoi.xml.build.issues.BuildXmlIssues;
+import insertdoi.xml.build.issues.articles.BuildXmlArticles;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +47,14 @@ public class Main {
         boolean divideByXlsxFile = Boolean.valueOf(prop.getProperty(PropertiesConfig
                 .getPropertySplitByFileName()));
         
-        for (String fileName : xlsxFilesName) {
+        BuildXmlArticles buildXmlArticles = null;
+        if (divideByXlsxFile) {
+            buildXmlArticles = new BuildXmlArticles();
+        }
+        
+        for (int index = 0; index < xlsxFilesName.size(); index++) {
+            String fileName = xlsxFilesName.get(index);
+            
             XlsxReader xlsxReader = new XlsxReader(resourcesFolderName+fileName);
             EventData eventData = xlsxReader.getEventData();
             
@@ -60,14 +68,22 @@ public class Main {
             pdfWriter.run();
             
             for (Section section : eventData.getSections()) {
-                buildXmlIssues.addSection(section);
+                if (divideByXlsxFile && index > 0) {
+                    String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))
+                            +"."+section.getAbbrev()+".xml";
+                    buildXmlArticles.setSection(section);
+                    buildXmlArticles.run(xmlname);
+                } else {
+                    buildXmlIssues.addSection(section);
+                }
+                
                 texfileBuilder.addSection(section);
             }
             
-            if (divideByXlsxFile == true) {
+            if (divideByXlsxFile && index == 0) {
                 String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))+".xml";
                 buildXmlIssues.run(xmlname);
-                buildXmlIssues = new BuildXmlIssues();
+                //buildXmlIssues = new BuildXmlIssues();
             }
         }
         
