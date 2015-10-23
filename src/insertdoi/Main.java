@@ -25,6 +25,13 @@ public class Main {
     public static void main(String[] args) {
         BasicConfigurator.configure();
         
+        boolean noWritePdfs = false;
+        for (int index = 0; index < args.length; index++) {
+            if (args[index].equals("nowritepdfs")) {
+                noWritePdfs = true;
+            }
+        }
+        
         Properties prop = PropertiesGetter.getInstance();
         
         String resourcesFolderName = "./";
@@ -61,8 +68,10 @@ public class Main {
             BuildDoi buildDoi = new BuildDoi(eventData);
             buildDoi.run();
             
-            PdfWriter pdfWriter = new PdfWriter(eventData);
-            pdfWriter.run();
+            if (!noWritePdfs) {
+                PdfWriter pdfWriter = new PdfWriter(eventData);
+                pdfWriter.run();
+            }
             
             for (Section section : eventData.getSections()) {
                 if (divideByXlsxFile && index > 0) {
