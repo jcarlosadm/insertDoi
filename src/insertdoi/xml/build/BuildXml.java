@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 public abstract class BuildXml {
     
     public void run(String xmlfinalFilename){
-        this.prebuildAlgorithms();
+        this.prebuildAlgorithms(xmlfinalFilename);
         
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         
@@ -65,6 +65,6 @@ public abstract class BuildXml {
     
     protected abstract String getRootElementName();
     
-    protected abstract void prebuildAlgorithms();
+    protected abstract void prebuildAlgorithms(String xmlFinalFilename);
 
 }

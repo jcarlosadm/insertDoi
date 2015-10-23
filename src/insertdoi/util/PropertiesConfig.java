@@ -188,6 +188,11 @@ public class PropertiesConfig {
         return filename+"."+PROPERTY_BY_TRACK_NAME+"."+order+"."+PROPERTY_BY_TRACK_SUFFIX_NAME;
     }
     
+    public static String getPropertySplitDivisionByFilename(String filename){
+        filename = parseFilename(filename);
+        return filename+"."+PROPERTY_SPLIT_DIVIDE;
+    }
+    
     public static String getPropertyTitleName(){
         return PROPERTY_TITLE_NAME;
     }

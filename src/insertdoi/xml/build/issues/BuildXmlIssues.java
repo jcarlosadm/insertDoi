@@ -25,11 +25,17 @@ public class BuildXmlIssues extends BuildXml {
     private static final String LOCALE_VALUE_PT_BR = "pt_BR";
 
     private List<Section> sections = new ArrayList<Section>();
+    
+    private String sourceFilename = "";
 
     public void addSection(Section section) {
         if (!this.sections.contains(section)) {
             this.sections.add(section);
         }
+    }
+    
+    public void setSourceFilename(String filename){
+        this.sourceFilename = filename;
     }
 
     @Override
@@ -94,12 +100,22 @@ public class BuildXmlIssues extends BuildXml {
     }
 
     @Override
-    protected void prebuildAlgorithms() {
-        // TODO Auto-generated method stub
+    protected void prebuildAlgorithms(String xmlFinalFilename) {
         Properties prop = PropertiesGetter.getInstance();
         
-        int division = Integer.parseInt(prop.getProperty(PropertiesConfig
-                .getPropertySplitDivideName()));
+        String divisionProp = prop.getProperty(PropertiesConfig
+                .getPropertySplitDivisionByFilename(this.sourceFilename));
+        
+        int division = 0;
+        if (divisionProp != null && divisionProp != "") {
+            division = Integer.parseInt(divisionProp);
+        }
+        
+        if (division <= 1) {
+            division = Integer.parseInt(prop.getProperty(PropertiesConfig
+                    .getPropertySplitDivideName()));
+        }
+        
         if (division <= 1) {
             return;
         }
@@ -145,8 +161,10 @@ public class BuildXmlIssues extends BuildXml {
             
             BuildXmlArticles buildXmlArticles = new BuildXmlArticles();
             for (int index = 0; index < auxSections.size(); index++) {
+                buildXmlArticles.disableDivision();
+                buildXmlArticles.setSourceFilename(this.sourceFilename);
                 buildXmlArticles.setSection(auxSections.get(index));
-                buildXmlArticles.run(section.getAbbrev()+"."+(index+1)+".xml");
+                buildXmlArticles.run(xmlFinalFilename+"."+(index+1)+".xml");
             }
         }
         

@@ -78,6 +78,7 @@ public class Main {
                     String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))
                             +"."+section.getAbbrev()+".xml";
                     buildXmlArticles.setSection(section);
+                    buildXmlArticles.setSourceFilename(fileName);
                     buildXmlArticles.run(xmlname);
                 } else {
                     buildXmlIssues.addSection(section);
@@ -88,6 +89,7 @@ public class Main {
             
             if (divideByXlsxFile && index == 0) {
                 String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))+".xml";
+                buildXmlIssues.setSourceFilename(fileName);
                 buildXmlIssues.run(xmlname);
             }
         }
