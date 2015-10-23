@@ -3,7 +3,6 @@ package insertdoi;
 import insertdoi.builddoi.BuildDoi;
 import insertdoi.event.EventData;
 import insertdoi.event.sections.Section;
-import insertdoi.pdfs.PdfMap;
 import insertdoi.pdfs.download.DownloadPdfs;
 import insertdoi.pdfs.writer.PdfWriter;
 import insertdoi.readxlsx.XlsxReader;
@@ -40,8 +39,6 @@ public class Main {
         TexfileBuilder texfileBuilder = new TexfileBuilder();
         BuildXmlIssues buildXmlIssues = new BuildXmlIssues();
         
-        PdfMap pdfMap = new PdfMap();
-        
         int firstpageNextPaper = 1;
         
         boolean divideByXlsxFile = Boolean.valueOf(prop.getProperty(PropertiesConfig
@@ -59,7 +56,7 @@ public class Main {
             EventData eventData = xlsxReader.getEventData();
             
             DownloadPdfs downloadPdfs = new DownloadPdfs(eventData);
-            firstpageNextPaper = downloadPdfs.run(pdfMap, firstpageNextPaper);
+            firstpageNextPaper = downloadPdfs.run(firstpageNextPaper);
             
             BuildDoi buildDoi = new BuildDoi(eventData);
             buildDoi.run();
@@ -83,7 +80,6 @@ public class Main {
             if (divideByXlsxFile && index == 0) {
                 String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))+".xml";
                 buildXmlIssues.run(xmlname);
-                //buildXmlIssues = new BuildXmlIssues();
             }
         }
         
