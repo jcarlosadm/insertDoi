@@ -5,7 +5,7 @@ import insertdoi.paper.PaperData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section {
+public class Section implements Cloneable {
     private String title = "";
     private String abbrev = "";
     private String suffix = "";
@@ -34,6 +34,10 @@ public class Section {
     public void addPaper(PaperData paper){
         this.papers.add(paper);
     }
+    
+    public void clearPapers(){
+        this.papers = new ArrayList<PaperData>();
+    }
 
     public String getSuffix() {
         return this.suffix;
@@ -52,5 +56,10 @@ public class Section {
         }
         
         return equal;
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

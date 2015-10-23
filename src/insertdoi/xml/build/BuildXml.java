@@ -15,13 +15,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public abstract class BuildXml {
     
     public void run(String xmlfinalFilename){
+        this.prebuildAlgorithms();
+        
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         
         try {
@@ -38,19 +39,6 @@ public abstract class BuildXml {
             
         } catch (ParserConfigurationException e) {
             ErrorWindow.run("Error to create xml file");
-        }
-    }
-
-    protected Element addElement(String elementName, Element parent, Document doc){
-        Element element = doc.createElement(elementName);
-        parent.appendChild(element);
-        
-        return element;
-    }
-    
-    protected void addTextNodeToElement(Element element, Document doc, String textNodeData){
-        if (textNodeData != null) {
-            element.appendChild(doc.createTextNode(textNodeData));
         }
     }
     
@@ -70,19 +58,13 @@ public abstract class BuildXml {
             ErrorWindow.run("Error to save xml");
         }
     }
-
-    protected void addAttributeToElement(Element element, Document doc,
-            String attributeName, String attributeValue) {
-
-        Attr attr = doc.createAttribute(attributeName);
-        attr.setValue(attributeValue);
-        element.setAttributeNode(attr);
-    }
     
     protected abstract void setRootProperties(Element rootElement, Document doc);
     
     protected abstract void addElementsToRoot(Document doc, Element rootElement);
     
     protected abstract String getRootElementName();
+    
+    protected abstract void prebuildAlgorithms();
 
 }
