@@ -12,6 +12,9 @@ public class PropertiesConfig {
     private static final String PROPERTY_PDF_HEADER_FIRSTLINE_NAME = "pdf.header.firstline";
     private static final String PROPERTY_PDF_HEADER_SECONDLINE_NAME = "pdf.header.secondline";
     
+    private static final String PROPERTY_SPLIT_BY_FILE_NAME = "split.by_file";
+    private static final String PROPERTY_SPLIT_DIVIDE = "split.divide";
+    
     private static final String EXTENSION_XLSX_FILE = "xlsx";
     private static final String PROPERTY_ARTICLES_FOLDER_NAME = "articles_folder";
     private static final String PROPERTY_USER_SUFFIX = "user";
@@ -271,6 +274,14 @@ public class PropertiesConfig {
 
     public static String getPropertyPdfHeaderSecondlineName() {
         return PROPERTY_PDF_HEADER_SECONDLINE_NAME;
+    }
+
+    public static String getPropertySplitByFileName() {
+        return PROPERTY_SPLIT_BY_FILE_NAME;
+    }
+
+    public static String getPropertySplitDivideName() {
+        return PROPERTY_SPLIT_DIVIDE;
     }
 
     public static String getPropertyXmlIssueVolume() {

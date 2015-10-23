@@ -9,12 +9,14 @@ import insertdoi.pdfs.writer.PdfWriter;
 import insertdoi.readxlsx.XlsxReader;
 import insertdoi.texfile.TexfileBuilder;
 import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
 import insertdoi.util.getfilenames.GetFileNames;
 import insertdoi.util.windows.finishWindow.FinishWindow;
 import insertdoi.xml.issues.build.BuildXmlIssues;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.BasicConfigurator;
 
@@ -22,6 +24,8 @@ public class Main {
     
     public static void main(String[] args) {
         BasicConfigurator.configure();
+        
+        Properties prop = PropertiesGetter.getInstance();
         
         String resourcesFolderName = "./";
         if (PropertiesConfig.getResourcesFolderName() != "") {
@@ -38,6 +42,9 @@ public class Main {
         PdfMap pdfMap = new PdfMap();
         
         int firstpageNextPaper = 1;
+        
+        boolean divideByXlsxFile = Boolean.valueOf(prop.getProperty(PropertiesConfig
+                .getPropertySplitByFileName()));
         
         for (String fileName : xlsxFilesName) {
             XlsxReader xlsxReader = new XlsxReader(resourcesFolderName+fileName);
@@ -56,9 +63,21 @@ public class Main {
                 buildXmlIssues.addSection(section);
                 texfileBuilder.addSection(section);
             }
+            
+            if (divideByXlsxFile == true) {
+                String xmlname = fileName.substring(0, fileName.lastIndexOf('.'))+".xml";
+                buildXmlIssues.run(xmlname);
+                buildXmlIssues = new BuildXmlIssues();
+            }
         }
         
-        buildXmlIssues.run();
+        if (divideByXlsxFile == false) {
+            String xmlFinalFilename = prop.getProperty(PropertiesConfig
+                    .getPropertyTitleName())+".xml";
+            
+            buildXmlIssues.run(xmlFinalFilename);
+        }
+        
         texfileBuilder.run();
         
         FinishWindow.run();

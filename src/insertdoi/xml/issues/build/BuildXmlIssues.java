@@ -48,7 +48,7 @@ public class BuildXmlIssues {
         }
     }
     
-    public void run(){
+    public void run(String xmlfinalFilename){
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         
         try {
@@ -66,7 +66,7 @@ public class BuildXmlIssues {
                 this.addElementsToSection(doc, section, sectionElement);
             }
             
-            this.saveXmlFile(doc);
+            this.saveXmlFile(doc, xmlfinalFilename);
             
         } catch (ParserConfigurationException e) {
             ErrorWindow.run("Error to create xml file");
@@ -359,16 +359,14 @@ public class BuildXmlIssues {
         }
     }
     
-    private void saveXmlFile(Document doc) {
-        Properties prop = PropertiesGetter.getInstance();
+    private void saveXmlFile(Document doc, String xmlFinalFilename) {
         
         TransformerFactory transFactory = TransformerFactory.newInstance();
         try {
             Transformer transformer = transFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(PropertiesConfig.getOutputFolderName()
-                    +File.separator+prop.getProperty(PropertiesConfig
-                            .getPropertyTitleName())+".xml"));
+                    +File.separator+xmlFinalFilename));
             transformer.transform(source, result);
         } catch (TransformerConfigurationException e) {
             ErrorWindow.run("Error to configure xml to save");
