@@ -25,7 +25,7 @@ public class BuildXmlIssues extends BuildXml {
     private static final String LOCALE_VALUE_PT_BR = "pt_BR";
 
     private List<Section> sections = new ArrayList<Section>();
-    
+
     private String sourceFilename = "";
 
     public void addSection(Section section) {
@@ -33,8 +33,8 @@ public class BuildXmlIssues extends BuildXml {
             this.sections.add(section);
         }
     }
-    
-    public void setSourceFilename(String filename){
+
+    public void setSourceFilename(String filename) {
         this.sourceFilename = filename;
     }
 
@@ -102,31 +102,34 @@ public class BuildXmlIssues extends BuildXml {
     @Override
     protected void prebuildAlgorithms(String xmlFinalFilename) {
         Properties prop = PropertiesGetter.getInstance();
-        
-        String divisionProp = prop.getProperty(PropertiesConfig
-                .getPropertySplitDivisionByFilename(this.sourceFilename));
-        
+
+        String divisionProp = null;
+        if (this.sourceFilename != null && this.sourceFilename != "") {
+            divisionProp = prop.getProperty(PropertiesConfig
+                    .getPropertySplitDivisionByFilename(this.sourceFilename));
+        }
+
         int division = 0;
         if (divisionProp != null && divisionProp != "") {
             division = Integer.parseInt(divisionProp);
         }
-        
+
         if (division <= 1) {
             division = Integer.parseInt(prop.getProperty(PropertiesConfig
                     .getPropertySplitDivideName()));
         }
-        
+
         if (division <= 1) {
             return;
         }
 
         List<Section> mainSectionList = new ArrayList<Section>();
-        
+
         for (Section section : sections) {
             int numberOfArticles = section.getPapers().size();
             int numberOfArticlesByFile = (int) Math
                     .ceil(((double) numberOfArticles) / division);
-            
+
             Section mainSection = null;
             try {
                 mainSection = (Section) section.clone();
@@ -136,15 +139,15 @@ public class BuildXmlIssues extends BuildXml {
                 e.printStackTrace();
                 ErrorWindow.run("Error to divide xml file");
             }
-            
+
             int auxSectionCount = 0;
             List<Section> auxSections = new ArrayList<Section>();
             Section auxCurrentSection = new Section();
             auxSections.add(auxCurrentSection);
-            
+
             for (int index = 0; index < section.getPapers().size(); index++) {
                 PaperData paper = section.getPapers().get(index);
-                
+
                 if (index < numberOfArticlesByFile) {
                     mainSection.addPaper(paper);
                 } else {
@@ -153,21 +156,22 @@ public class BuildXmlIssues extends BuildXml {
                         auxSections.add(auxCurrentSection);
                         auxSectionCount = 0;
                     }
-                    
+
                     auxCurrentSection.addPaper(paper);
                     auxSectionCount++;
                 }
             }
-            
+
             BuildXmlArticles buildXmlArticles = new BuildXmlArticles();
             for (int index = 0; index < auxSections.size(); index++) {
                 buildXmlArticles.disableDivision();
                 buildXmlArticles.setSourceFilename(this.sourceFilename);
                 buildXmlArticles.setSection(auxSections.get(index));
-                buildXmlArticles.run(xmlFinalFilename+"."+(index+1)+".xml");
+                buildXmlArticles.run(xmlFinalFilename + "." + (index + 1)
+                        + ".xml");
             }
         }
-        
+
         this.sections = mainSectionList;
     }
 }
