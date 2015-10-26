@@ -1,15 +1,15 @@
 package insertdoi.xml.build.issues.articles;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import insertdoi.event.sections.Section;
 import insertdoi.paper.PaperData;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
 import insertdoi.util.windows.errorwindow.ErrorWindow;
 import insertdoi.xml.build.BuildXml;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

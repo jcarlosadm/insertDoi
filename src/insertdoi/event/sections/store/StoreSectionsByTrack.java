@@ -1,15 +1,15 @@
 package insertdoi.event.sections.store;
 
+import insertdoi.event.sections.Section;
+import insertdoi.paper.PaperData;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import insertdoi.event.sections.Section;
-import insertdoi.paper.PaperData;
-import insertdoi.util.PropertiesConfig;
-import insertdoi.util.PropertiesGetter;
 
 public class StoreSectionsByTrack implements StoreSections {
 

@@ -1,5 +1,12 @@
 package insertdoi.pdfs.writer;
 
+import insertdoi.event.EventData;
+import insertdoi.event.sections.Section;
+import insertdoi.paper.PaperData;
+import insertdoi.util.PropertiesConfig;
+import insertdoi.util.PropertiesGetter;
+import insertdoi.util.windows.errorwindow.ErrorWindow;
+
 import java.io.File;
 import java.util.Properties;
 
@@ -8,12 +15,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
-import insertdoi.event.EventData;
-import insertdoi.paper.PaperData;
-import insertdoi.util.PropertiesConfig;
-import insertdoi.util.PropertiesGetter;
-import insertdoi.util.windows.errorwindow.ErrorWindow;
 
 public class PdfWriter {
 
@@ -26,9 +27,11 @@ public class PdfWriter {
     }
 
     public void run() {
-        for (PaperData paper : eventData.getPapers()) {
-            if (!paper.getPdfInfo().isWritten()) {
-                this.insertInformations(paper);
+        for (Section section : this.eventData.getSections()) {
+            for (PaperData paper : section.getPapers()) {
+                if (!paper.getPdfInfo().isWritten()) {
+                    this.insertInformations(paper);
+                }
             }
         }
     }
@@ -70,8 +73,8 @@ public class PdfWriter {
         
         try {
             PDPageContentStream contentStream = new PDPageContentStream(
-                    pdfFile, page, true, true);
-
+                    pdfFile, page, true, true, true);
+            
             this.insertPage(contentStream, paper.getPdfInfo().getFirstPage() + index,
                     font, fontSize);
             
@@ -81,6 +84,7 @@ public class PdfWriter {
 
             contentStream.close();
         } catch (Exception e) {
+            e.printStackTrace();
             ErrorWindow.run("failed to write information in pdf");
         }
 
@@ -91,7 +95,7 @@ public class PdfWriter {
 
         try {
             PDPageContentStream contentStream = new PDPageContentStream(
-                    pdfFile, page, true, true);
+                    pdfFile, page, true, true, true);
 
             if (paper.getDoiString() != null && paper.getDoiString() != "") {
                 this.insertDoi(contentStream, paper.getDoiString(), font, fontSize);

@@ -1,12 +1,12 @@
 package insertdoi.builddoi;
 
-import java.util.List;
-import java.util.Properties;
-
 import insertdoi.event.EventData;
 import insertdoi.paper.PaperData;
 import insertdoi.util.PropertiesConfig;
 import insertdoi.util.PropertiesGetter;
+
+import java.util.List;
+import java.util.Properties;
 
 public class BuildDoi {
     

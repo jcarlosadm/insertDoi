@@ -1,6 +1,7 @@
 package insertdoi.pdfs.download;
 
 import insertdoi.event.EventData;
+import insertdoi.event.sections.Section;
 import insertdoi.paper.PaperData;
 import insertdoi.pdfs.PdfInfo;
 import insertdoi.util.PropertiesConfig;
@@ -12,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -35,17 +35,26 @@ public class DownloadPdfs {
     public int run(int firstpageNextPaper) {
         System.setProperty("jsse.enableSNIExtension", "false");
         
-        List<PaperData> papers = this.eventData.getPapers();
+        int totalOperations = 0;
+        
+        for (Section section : this.eventData.getSections()) {
+            totalOperations += section.getPapers().size();
+        }
         
         ProgressBar progressBar = ProgressBar.getInstance("Articles", "Downloading pdfs...");
         progressBar.clearOperations();
-        progressBar.defineTotalOperations(papers.size());
+        progressBar.defineTotalOperations(totalOperations);
         
         this.createDownloadFolder();
         
-        for (PaperData paper : papers) {
-            firstpageNextPaper = 
-                    this.downloadPdf(paper, progressBar, firstpageNextPaper);
+        for (Section section : this.eventData.getSections()) {
+            for (PaperData paper : section.getPapers()) {
+                if (paper.getPdfInfo() == null 
+                        || paper.getPdfInfo().getFirstPage() == 0) {
+                    firstpageNextPaper = 
+                            this.downloadPdf(paper, progressBar, firstpageNextPaper);
+                }
+            }
         }
         
         progressBar.closeProgressBar();

@@ -32,7 +32,9 @@ public class Section implements Cloneable {
     }
 
     public void addPaper(PaperData paper){
-        this.papers.add(paper);
+        if (!this.papers.contains(paper)) {
+            this.papers.add(paper);
+        }
     }
     
     public void clearPapers(){

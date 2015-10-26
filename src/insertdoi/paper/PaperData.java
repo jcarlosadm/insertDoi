@@ -90,5 +90,16 @@ public class PaperData {
     public void setPdfUrlFinal(String pdfUrlFinal) {
         this.pdfUrlFinal = pdfUrlFinal;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        boolean equal = false;
+        
+        if (obj != null && obj instanceof PaperData) {
+            equal = (obj.hashCode() == this.hashCode());
+        }
+        
+        return equal;
+    }
 
 }
