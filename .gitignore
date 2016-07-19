@@ -21,3 +21,4 @@ libs
 resources
 /resources/
 /outputs/
+/target/
